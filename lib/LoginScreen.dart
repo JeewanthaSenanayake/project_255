@@ -24,6 +24,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 "assets/The_Parliament_Login_Screen.png",
                 width: scrnwidth,
               ),
+              // Image.asset(
+              //   "assets/loading.gif",
+              //   width: scrnwidth * 0.2,
+              // ),
               Container(
                 margin: EdgeInsets.all(scrnwidth * 0.025),
                 // color: Colors.white,
