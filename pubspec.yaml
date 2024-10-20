@@ -37,6 +37,9 @@ dependencies:
   cupertino_icons: ^1.0.8
   firebase_core: ^3.6.0
   flutter_native_splash: ^2.4.1
+  flutter_svg: ^2.0.10+1
+  svg_path_parser: ^1.1.2
+  
 
 dev_dependencies:
   flutter_test:
