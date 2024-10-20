@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_225/MapScreen.dart';
+import 'package:project_225/Services.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -9,6 +10,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final AuthenticationService authService = AuthenticationService();
   @override
   Widget build(BuildContext context) {
     double scrnwidth = MediaQuery.of(context).size.width;
@@ -77,13 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: EdgeInsets.all(scrnheight * 0.01),
                     width: scrnwidth * 0.5,
                     child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MapScreen()),
-                        );
-                      },
+                      onPressed: () {},
                       child: Text("Login"),
                     ),
                   ),
@@ -98,6 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
+                      googleSignIn();
                       print("Google Sign In");
                     },
                     child: Container(
@@ -138,5 +135,15 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> googleSignIn() async {
+    dynamic user = await authService.signInWithGoogle();
+    print(user);
+
+    // Navigator.pushReplacement(
+    //                       context,
+    //                       MaterialPageRoute(builder: (context) => MapScreen()),
+    //                     );
   }
 }
