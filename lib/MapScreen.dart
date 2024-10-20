@@ -4,13 +4,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart';
 
 class MapScreen extends StatefulWidget {
-  const MapScreen({super.key});
+  dynamic user;
+  MapScreen({super.key, required this.user});
 
   @override
-  State<MapScreen> createState() => _MapScreenState();
+  State<MapScreen> createState() => _MapScreenState(user: user);
 }
 
 class _MapScreenState extends State<MapScreen> {
+  dynamic user;
+  _MapScreenState({required this.user});
   void onRegionTap(String regionName) {
     print('Tapped on region: $regionName');
   }
@@ -52,7 +55,7 @@ class _MapScreenState extends State<MapScreen> {
               Padding(
                 padding: EdgeInsets.all(scrnwidth * 0.02),
                 child: Text(
-                  "මැතිවරන දිත්‍රික්ක තුලින් ඔබ තෝරාගත් මත්‍රීවරුන් මගින් රටට සිදුවන සේවය අනුව දිත්‍රික වර්ණ ගැන්වේ.",
+                  "මැතිවරන දිත්‍රික්ක තුලින් ඔබ තෝරාගත් මත්‍රීවරුන් මගින් රටට සිදුවන සේවය අනුව දිත්‍රික වර්ණ ගැන්වේ. \n ${user.toString()}",
                   style: TextStyle(
                     color: Colors.white,
                   ),

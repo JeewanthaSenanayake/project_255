@@ -34,3 +34,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+// footer - home, profile, notifications. help
