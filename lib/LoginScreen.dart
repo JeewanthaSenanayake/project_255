@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_225/MapScreen.dart';
 import 'package:project_225/Services.dart';
+import 'package:project_225/SingUp.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -35,13 +36,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: EdgeInsets.all(scrnheight * 0.01),
                       child: TextField(
                         decoration: InputDecoration(
-                          hintText: "Username",
+                          hintText: "Email",
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
                           hintStyle: TextStyle(
-                            color: Colors.white,
+                            color: Colors.amber,
                           ),
+                        ),
+                        style: TextStyle(
+                          color: Colors.amber,
                         ),
                       ),
                     ),
@@ -54,8 +58,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           hintStyle: TextStyle(
-                            color: Colors.white,
+                            color: Colors.amber,
                           ),
+                        ),
+                        style: TextStyle(
+                          color: Colors.amber,
                         ),
                       ),
                     ),
@@ -116,7 +123,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         TextButton(
                           onPressed: () {
-                            print("Sign Up");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SingUp(),
+                              ),
+                            );
                           },
                           child: Text(
                             "Sign Up",
@@ -153,12 +165,15 @@ class _LoginScreenState extends State<LoginScreen> {
       isLoading = true;
     });
     dynamic user = await authService.signInWithGoogle();
+    
     setState(() {
       isLoading = false;
     });
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => MapScreen(user: user)),
-    );
+    if (user != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MapScreen(user: user)),
+      );
+    }
   }
 }
