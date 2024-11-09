@@ -18,12 +18,33 @@ class _MapScreenState extends State<MapScreen> {
     print('Tapped on region: $regionName');
   }
 
+  // for footer
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      // if (index == 0) {
+      //   Navigator.of(context)
+      //       .push(MaterialPageRoute(builder: (context) => HomePage(uid: uid)));
+      // }
+      // if (index == 1) {
+      //   Navigator.of(context)
+      //       .push(MaterialPageRoute(builder: (context) => Oder(uid: uid)));
+      // }
+      // if (index == 2) {
+      //   Navigator.of(context)
+      //       .push(MaterialPageRoute(builder: (context) => cart(uid: uid)));
+      // }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     double scrnwidth = MediaQuery.of(context).size.width;
     double scrnheight = MediaQuery.of(context).size.height;
-    
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
@@ -53,11 +74,10 @@ class _MapScreenState extends State<MapScreen> {
                   ],
                 ),
               ),
-             
               Padding(
                 padding: EdgeInsets.all(scrnwidth * 0.02),
                 child: Text(
-                  "මැතිවරන දිත්‍රික්ක තුලින් ඔබ තෝරාගත් මත්‍රීවරුන් මගින් රටට සිදුවන සේවය අනුව දිත්‍රික වර්ණ ගැන්වේ. \n ${user.toString()}",
+                  "මැතිවරන දිත්‍රික්ක තුලින් ඔබ තෝරාගත් මත්‍රීවරුන් මගින් රටට සිදුවන සේවය අනුව දිත්‍රික වර්ණ ගැන්වේ. \n ${user.toString()} මැතිවරන දිත්‍රික්ක තුලින් ඔබ තෝරාගත් මත්‍රීවරුන් මගින් රටට සිදුවන සේවය අනුව දිත්‍රික වර්ණ ගැන්වේ. \n ${user.toString()}",
                   style: TextStyle(
                     color: Colors.white,
                   ),
@@ -67,6 +87,33 @@ class _MapScreenState extends State<MapScreen> {
             ],
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+            backgroundColor: Color.fromARGB(121, 34, 33, 33),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            label: 'Notifications',
+            backgroundColor: Color.fromARGB(121, 34, 33, 33),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle_sharp),
+            label: 'Account',
+            backgroundColor: Color.fromARGB(121, 34, 33, 33),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.help),
+            label: 'Help',
+            backgroundColor: Color.fromARGB(121, 34, 33, 33),
+          ),
+        ],
+        currentIndex: 0,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
       ),
     );
   }

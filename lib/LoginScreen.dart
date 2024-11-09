@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:project_225/MapScreen.dart';
-import 'package:project_225/Services.dart';
+import 'package:project_225/services/UserServices.dart';
 import 'package:project_225/SingUp.dart';
+import 'globals.dart';
+import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,6 +13,33 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  Future<void> checkingConnection() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      final response = await http.get(
+        Uri.parse("$baseUrl/api/v1/connection"),
+      );
+      if (response.statusCode == 200) {
+        setState(() {
+          isLoading = false;
+        });
+        print("Connection Established");
+      }
+    } catch (_) {
+      print("Connection Not Established");
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+    checkingConnection();
+  }
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final AuthenticationService authService = AuthenticationService();
   bool isLoading = false;
