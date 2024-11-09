@@ -49,6 +49,7 @@ class AuthenticationService {
       }
     } catch (e) {
       print(e);
+      return null;
     }
   }
 
@@ -58,10 +59,17 @@ class AuthenticationService {
           await _firebaseAuth.createUserWithEmailAndPassword(
               email: udata['email'], password: udata['password']);
       //Add data to data base
-
-      return result.user;
+      dynamic userdata = {
+        "id": result.user!.uid,
+        "email": udata['email'],
+        "firstName": udata['firstName'],
+        "lastName": udata['lastName'],
+        "imgUrl": null,
+      };
+      return await createNewUserOnDB(userdata);
     } catch (e) {
       print(e.toString());
+      return null;
     }
   }
 
@@ -69,7 +77,7 @@ class AuthenticationService {
     try {
       UserCredential result = await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-      return result.user;
+      return await getUserData(result.user!.uid);
     } catch (e) {
       print(e.toString());
     }
@@ -92,6 +100,22 @@ class AuthenticationService {
     } catch (e) {
       print(e);
       return false;
+    }
+  }
+
+  Future<dynamic> getUserData(String uid) async {
+    try {
+      final response = await http.get(
+        Uri.parse("$baseUrl/api/v1/user/get_user_by_id/$uid"),
+      );
+      if (response.statusCode == 200) {
+        return json.decode(response.body)[0];
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
     }
   }
 
