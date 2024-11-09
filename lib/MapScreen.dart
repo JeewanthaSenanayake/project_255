@@ -23,6 +23,7 @@ class _MapScreenState extends State<MapScreen> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     double scrnwidth = MediaQuery.of(context).size.width;
     double scrnheight = MediaQuery.of(context).size.height;
+    
     return Scaffold(
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
@@ -52,6 +53,7 @@ class _MapScreenState extends State<MapScreen> {
                   ],
                 ),
               ),
+             
               Padding(
                 padding: EdgeInsets.all(scrnwidth * 0.02),
                 child: Text(

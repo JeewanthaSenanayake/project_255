@@ -69,8 +69,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     Container(
                       alignment: Alignment.topRight,
                       child: TextButton(
-                          onPressed: () {
+                          onPressed: () async {
                             print("Forgot Password?");
+                            print(await authService
+                                .userFoundInDB("idH1D3hPA1cPrlCrZbJ0NApNJzQ2"));
                           },
                           child: Text(
                             "Forgot Password?",
@@ -165,7 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
       isLoading = true;
     });
     dynamic user = await authService.signInWithGoogle();
-    
+
     setState(() {
       isLoading = false;
     });
