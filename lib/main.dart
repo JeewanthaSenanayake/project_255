@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:project_225/Home/MapScreen.dart';
 import 'package:project_225/LoginScreen.dart';
+import 'package:project_225/services/UserServices.dart';
 import 'firebase_options.dart';
 import 'package:flutter/services.dart';
 
@@ -19,9 +21,10 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
 
   // This widget is the root of your application.
+  dynamic uid = AuthenticationService().getCurrentUser();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -30,7 +33,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
         useMaterial3: true,
       ),
-      home: const LoginScreen(),
+      home: uid == null ? LoginScreen() : MapScreen(uid: uid),
     );
   }
 }

@@ -9,8 +9,12 @@ class AuthenticationService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  String getCurrentUser() {
-    return _firebaseAuth.currentUser!.uid;
+  dynamic getCurrentUser() {
+    try {
+      return _firebaseAuth.currentUser!.uid;
+    } catch (e) {
+      return null;
+    }
   }
 
   Future SingOut() async {
@@ -40,9 +44,10 @@ class AuthenticationService {
         "lastName": displayName.last,
         "imgUrl": user.photoURL,
       };
-      if (await userFoundInDB(user.uid)) {
+      dynamic userIndb = await getUserData(user.uid);
+      if (userIndb != null) {
         print("User found in DB");
-        return udata;
+        return user.uid;
       } else {
         print("User not found in DB and creating new user");
         return await createNewUserOnDB(udata);
@@ -83,33 +88,17 @@ class AuthenticationService {
     }
   }
 
-  Future<bool> userFoundInDB(String uid) async {
-    try {
-      final response = await http.get(
-        Uri.parse("$baseUrl/api/v1/user/get_user_by_id/$uid"),
-      );
-      if (response.statusCode == 200) {
-        if (json.decode(response.body).length != 0) {
-          return true;
-        } else {
-          return false;
-        }
-      } else {
-        return false;
-      }
-    } catch (e) {
-      print(e);
-      return false;
-    }
-  }
-
   Future<dynamic> getUserData(String uid) async {
     try {
       final response = await http.get(
         Uri.parse("$baseUrl/api/v1/user/get_user_by_id/$uid"),
       );
       if (response.statusCode == 200) {
-        return json.decode(response.body)[0];
+        if (json.decode(response.body).length != 0) {
+          return json.decode(response.body)[0];
+        } else {
+          return null;
+        }
       } else {
         return null;
       }
@@ -126,7 +115,7 @@ class AuthenticationService {
           headers: {'Content-Type': 'application/json'},
           body: json.encoder.convert(udata));
       if (response.statusCode == 200) {
-        return udata;
+        return udata['id'];
       } else {
         return null;
       }

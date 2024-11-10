@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:project_225/Account/AccountScreen.dart';
 import 'package:svg_path_parser/svg_path_parser.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart';
 
 class MapScreen extends StatefulWidget {
-  dynamic user;
-  MapScreen({super.key, required this.user});
+  String uid;
+  MapScreen({super.key, required this.uid});
 
   @override
-  State<MapScreen> createState() => _MapScreenState(user: user);
+  State<MapScreen> createState() => _MapScreenState(uid: uid);
 }
 
 class _MapScreenState extends State<MapScreen> {
-  dynamic user;
-  _MapScreenState({required this.user});
+  String uid;
+  _MapScreenState({required this.uid});
   void onRegionTap(String regionName) {
     print('Tapped on region: $regionName');
   }
@@ -24,19 +25,20 @@ class _MapScreenState extends State<MapScreen> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      // if (index == 0) {
+      // if (index == 1) {
       //   Navigator.of(context)
       //       .push(MaterialPageRoute(builder: (context) => HomePage(uid: uid)));
       // }
-      // if (index == 1) {
+      // if (index == 2) {
       //   Navigator.of(context)
       //       .push(MaterialPageRoute(builder: (context) => Oder(uid: uid)));
       // }
-      // if (index == 2) {
-      //   Navigator.of(context)
-      //       .push(MaterialPageRoute(builder: (context) => cart(uid: uid)));
-      // }
+      if (index == 2) {
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => AccountScreen(uid: uid)));
+      }
     });
+    print(index);
   }
 
   @override
@@ -77,7 +79,7 @@ class _MapScreenState extends State<MapScreen> {
               Padding(
                 padding: EdgeInsets.all(scrnwidth * 0.02),
                 child: Text(
-                  "මැතිවරන දිත්‍රික්ක තුලින් ඔබ තෝරාගත් මත්‍රීවරුන් මගින් රටට සිදුවන සේවය අනුව දිත්‍රික වර්ණ ගැන්වේ. \n ${user.toString()} මැතිවරන දිත්‍රික්ක තුලින් ඔබ තෝරාගත් මත්‍රීවරුන් මගින් රටට සිදුවන සේවය අනුව දිත්‍රික වර්ණ ගැන්වේ. \n ${user.toString()}",
+                  "මැතිවරන දිත්‍රික්ක තුලින් ඔබ තෝරාගත් මත්‍රීවරුන් මගින් රටට සිදුවන සේවය අනුව දිත්‍රික වර්ණ ගැන්වේ. \n ${uid.toString()} මැතිවරන දිත්‍රික්ක තුලින් ඔබ තෝරාගත් මත්‍රීවරුන් මගින් රටට සිදුවන සේවය අනුව දිත්‍රික වර්ණ ගැන්වේ. \n ${uid.toString()}",
                   style: TextStyle(
                     color: Colors.white,
                   ),

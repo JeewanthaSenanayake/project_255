@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project_225/MapScreen.dart';
+import 'package:project_225/Home/MapScreen.dart';
 import 'package:project_225/services/UserServices.dart';
 import 'package:project_225/SingUp.dart';
 import 'globals.dart';
@@ -35,7 +35,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     // TODO: implement initState
-
     super.initState();
     checkingConnection();
   }
@@ -125,8 +124,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () async {
                               print("Forgot Password?");
                               authService.SingOut();
-                              print(await authService.userFoundInDB(
-                                  "idH1D3hPA1cPrlCrZbJ0NApNJzQ2"));
                             },
                             child: Text(
                               "Forgot Password?",
@@ -154,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          MapScreen(user: uData)),
+                                          MapScreen(uid: uData)),
                                 );
                               }
                               setState(() {
@@ -248,7 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (user != null) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => MapScreen(user: user)),
+        MaterialPageRoute(builder: (context) => MapScreen(uid: user)),
       );
     }
     setState(() {
