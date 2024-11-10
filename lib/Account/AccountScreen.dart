@@ -36,6 +36,23 @@ class _AccountScreenState extends State<AccountScreen> {
     });
   }
 
+  dynamic userData;
+  bool isLoading = true;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getUserData();
+  }
+
+  getUserData() async {
+    dynamic userInfo = await AuthenticationService().getUserData(uid);
+    setState(() {
+      isLoading = false;
+      userData = userInfo;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
@@ -44,33 +61,66 @@ class _AccountScreenState extends State<AccountScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.only(
-              top: scrnheight * 0.05,
-              left: scrnwidth * 0.025,
-              right: scrnwidth * 0.025),
-          child: Column(
-            children: [
-              // Image.asset(
-              //   "assets/The_Parliament_Login_Screen.png",
-              //   width: scrnwidth,
-              // ),
-              Text(
-                uid.toString(),
-                style: TextStyle(color: Colors.white),
+        child: isLoading == false
+            ? Container(
+                margin: EdgeInsets.only(
+                    top: scrnheight * 0.05,
+                    left: scrnwidth * 0.025,
+                    right: scrnwidth * 0.025),
+                child: Stack(
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Center(
+                          child: ClipOval(
+                            child: userData['imgUrl'] != null
+                                ? Image.network(
+                                    userData['imgUrl'],
+                                    width: scrnwidth * 0.5,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.asset(
+                                    'assets/loadingMan.png',
+                                    width: scrnwidth * 0.5,
+                                    fit: BoxFit.cover,
+                                  ),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: scrnheight * 0.025),
+                          child: Text(
+                            userData['firstName'] + " " + userData['lastName'],
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: scrnwidth * 0.075),
+                          ),
+                        ),
+                        ElevatedButton(
+                            onPressed: () async {
+                              AuthenticationService().SingOut();
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginScreen()),
+                              );
+                            },
+                            child: Text("Sing Out")),
+                        Text(userData.toString())
+                      ],
+                    ),
+                  ],
+                ))
+            : Container(
+                margin: EdgeInsets.only(top: scrnheight * 0.45),
+                child: Center(
+                  child: Image.asset(
+                    "assets/loading.gif",
+                    width: scrnwidth * 0.2,
+                  ),
+                ),
               ),
-              ElevatedButton(
-                  onPressed: () async {
-                    AuthenticationService().SingOut();
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
-                    );
-                  },
-                  child: Text("Sing Out")),
-            ],
-          ),
-        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[

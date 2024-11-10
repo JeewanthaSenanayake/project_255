@@ -82,7 +82,7 @@ class AuthenticationService {
     try {
       UserCredential result = await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-      return await getUserData(result.user!.uid);
+      return result.user!.uid;
     } catch (e) {
       print(e.toString());
     }
