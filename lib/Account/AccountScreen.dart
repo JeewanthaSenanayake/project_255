@@ -110,6 +110,24 @@ class _AccountScreenState extends State<AccountScreen> {
                         Text(userData.toString())
                       ],
                     ),
+                    Positioned(
+                        top: scrnheight * 0.18,
+                        left: scrnwidth * 0.57,
+                        child: ClipOval(
+                          child: Container(
+                            color: const Color.fromARGB(185, 0, 0, 0),
+                            child: IconButton(
+                                onPressed: () async {
+                                  // await getProfileImage();
+                                  print("Camera");
+                                },
+                                icon: Icon(
+                                  Icons.camera_alt,
+                                  color: Colors.white,
+                                  size: scrnwidth * 0.075,
+                                )),
+                          ),
+                        ))
                   ],
                 ))
             : Container(
