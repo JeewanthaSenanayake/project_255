@@ -1,8 +1,12 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:project_225/Home/MapScreen.dart';
 import 'package:project_225/LoginScreen.dart';
 import 'package:project_225/services/UserServices.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class AccountScreen extends StatefulWidget {
   String uid;
@@ -53,6 +57,51 @@ class _AccountScreenState extends State<AccountScreen> {
     });
   }
 
+  Future<String> uploadImage(_imageFile) async {
+    if (_imageFile == null) {
+      return "fail";
+    }
+
+    final firebase_storage.Reference ref =
+        firebase_storage.FirebaseStorage.instance.ref().child('user/profile');
+
+    await ref.putFile(_imageFile!);
+    final url = await ref.getDownloadURL();
+
+    // Do something with the download URL (e.g. save to Firebase Firestore)
+    return url;
+    // print(url);
+  }
+
+  File? _imageFile;
+  getProfileImage() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: [
+          'jpg',
+          'jpeg',
+          'png',
+          'gif',
+          'bmp',
+          'tiff',
+          'svg',
+          'webp'
+        ]);
+    if (result != null) {
+      File file = File(result.files.single.path!);
+      print(file);
+      print(_imageFile);
+      setState(() {
+        _imageFile = file;
+      });
+      print(_imageFile);
+      // uploadProfileImage(file);
+      // print(uploadImage(file));
+    } else {
+      // User canceled the picker
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
@@ -75,15 +124,24 @@ class _AccountScreenState extends State<AccountScreen> {
                       children: [
                         Center(
                           child: ClipOval(
-                            child: userData['imgUrl'] != null
-                                ? Image.network(
-                                    userData['imgUrl'],
+                            child: _imageFile == null
+                                ? (userData['imgUrl'] != null
+                                    ? Image.network(
+                                        userData['imgUrl'],
+                                        width: scrnwidth * 0.5,
+                                        height: scrnwidth * 0.5,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.asset(
+                                        'assets/loadingMan.png',
+                                        width: scrnwidth * 0.5,
+                                        height: scrnwidth * 0.5,
+                                        fit: BoxFit.cover,
+                                      ))
+                                : Image.file(
+                                    _imageFile!,
                                     width: scrnwidth * 0.5,
-                                    fit: BoxFit.cover,
-                                  )
-                                : Image.asset(
-                                    'assets/loadingMan.png',
-                                    width: scrnwidth * 0.5,
+                                    height: scrnwidth * 0.5,
                                     fit: BoxFit.cover,
                                   ),
                           ),
@@ -118,7 +176,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             color: const Color.fromARGB(185, 0, 0, 0),
                             child: IconButton(
                                 onPressed: () async {
-                                  // await getProfileImage();
+                                  await getProfileImage();
                                   print("Camera");
                                 },
                                 icon: Icon(
