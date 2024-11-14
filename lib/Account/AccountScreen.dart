@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:project_225/Home/MapScreen.dart';
 import 'package:project_225/LoginScreen.dart';
 import 'package:project_225/services/UserServices.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class AccountScreen extends StatefulWidget {
   String uid;
@@ -41,7 +40,7 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   dynamic userData;
-  bool isLoading = true;
+  bool isLoading = true, isLoading2 = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -55,22 +54,6 @@ class _AccountScreenState extends State<AccountScreen> {
       isLoading = false;
       userData = userInfo;
     });
-  }
-
-  Future<String> uploadImage(_imageFile) async {
-    if (_imageFile == null) {
-      return "fail";
-    }
-
-    final firebase_storage.Reference ref =
-        firebase_storage.FirebaseStorage.instance.ref().child('user/profile');
-
-    await ref.putFile(_imageFile!);
-    final url = await ref.getDownloadURL();
-
-    // Do something with the download URL (e.g. save to Firebase Firestore)
-    return url;
-    // print(url);
   }
 
   File? _imageFile;
@@ -89,14 +72,10 @@ class _AccountScreenState extends State<AccountScreen> {
         ]);
     if (result != null) {
       File file = File(result.files.single.path!);
-      print(file);
-      print(_imageFile);
       setState(() {
         _imageFile = file;
       });
-      print(_imageFile);
-      // uploadProfileImage(file);
-      // print(uploadImage(file));
+      
     } else {
       // User canceled the picker
     }
@@ -126,8 +105,11 @@ class _AccountScreenState extends State<AccountScreen> {
                           child: ClipOval(
                             child: _imageFile == null
                                 ? (userData['imgUrl'] != null
-                                    ? Image.network(
-                                        userData['imgUrl'],
+                                    ? FadeInImage(
+                                        placeholder: const AssetImage(
+                                            'assets/loadingMan.png'),
+                                        image: NetworkImage(
+                                            "${userData['imgUrl']}"),
                                         width: scrnwidth * 0.5,
                                         height: scrnwidth * 0.5,
                                         fit: BoxFit.cover,
@@ -146,6 +128,61 @@ class _AccountScreenState extends State<AccountScreen> {
                                   ),
                           ),
                         ),
+                        _imageFile != null
+                            ? Container(
+                                margin:
+                                    EdgeInsets.only(top: scrnheight * 0.025),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                          right: scrnwidth * 0.025),
+                                      child: ElevatedButton.icon(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                const Color.fromARGB(
+                                                    255, 255, 116, 106),
+                                          ),
+                                          onPressed: () async {
+                                            setState(() {
+                                              _imageFile = null;
+                                            });
+                                          },
+                                          label: Text("Discard"),
+                                          icon: Icon(Icons.close)),
+                                    ),
+                                    ElevatedButton.icon(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: const Color.fromARGB(
+                                              255, 106, 255, 114),
+                                        ),
+                                        onPressed: () async {
+                                          setState(() {
+                                            isLoading2 = true;
+                                          });
+                                          final response =
+                                              await AuthenticationService()
+                                                  .updateUserData(
+                                                      _imageFile!, uid);
+                                          if (response != false) {
+                                            setState(() {
+                                              userData['imgUrl'] = response;
+                                              _imageFile = null;
+                                              isLoading2 = false;
+                                            });
+                                          } else {
+                                            setState(() {
+                                              isLoading2 = false;
+                                            });
+                                          }
+                                        },
+                                        label: Text("Upload"),
+                                        icon: Icon(Icons.upload)),
+                                  ],
+                                ),
+                              )
+                            : Container(),
                         Container(
                           margin: EdgeInsets.only(top: scrnheight * 0.025),
                           child: Text(
@@ -185,7 +222,18 @@ class _AccountScreenState extends State<AccountScreen> {
                                   size: scrnwidth * 0.075,
                                 )),
                           ),
-                        ))
+                        )),
+                    isLoading2
+                        ? Container(
+                            margin: EdgeInsets.only(top: scrnheight * 0.45),
+                            child: Center(
+                              child: Image.asset(
+                                "assets/loading.gif",
+                                width: scrnwidth * 0.2,
+                              ),
+                            ),
+                          )
+                        : Container(),
                   ],
                 ))
             : Container(

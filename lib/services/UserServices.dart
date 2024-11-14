@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http_parser/http_parser.dart';
 import '../globals.dart';
 import 'package:http/http.dart' as http;
+import 'package:mime/mime.dart';
 
 class AuthenticationService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -122,6 +125,34 @@ class AuthenticationService {
     } catch (e) {
       print(e);
       return null;
+    }
+  }
+
+  Future<dynamic> updateUserData(File imgFile, String uid) async {
+    final url = Uri.parse("$baseUrl/api/v1/user/update_user_pic/$uid");
+    var request = http.MultipartRequest('PUT', url);
+    final mimeType = lookupMimeType(imgFile.path);
+    request.files.add(await http.MultipartFile.fromPath(
+      'file', // Field name expected by the server
+      imgFile.path,
+      contentType: MediaType.parse(mimeType ?? 'application/octet-stream'),
+    ));
+
+    try {
+      var response = await request.send();
+      final responseBody = await http.Response.fromStream(response);
+
+      if (response.statusCode == 200) {
+        print("Image uploaded successfully: ${responseBody.body}");
+        return json.decode(responseBody.body)['imgurl'];
+      } else {
+        print(
+            "Image upload failed with status: ${response.statusCode}, ${responseBody.body}");
+        return false;
+      }
+    } catch (e) {
+      print("Error uploading image: $e");
+      return false;
     }
   }
 }
