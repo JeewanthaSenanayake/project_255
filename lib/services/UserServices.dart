@@ -128,6 +128,23 @@ class AuthenticationService {
     }
   }
 
+  Future<dynamic> updateUserNameData(dynamic udata, String uid) async {
+    try {
+      final response = await http.put(
+          Uri.parse("$baseUrl/api/v1/user/update_user_by_id/$uid"),
+          headers: {'Content-Type': 'application/json'},
+          body: json.encoder.convert(udata));
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
   Future<dynamic> updateUserData(File imgFile, String uid) async {
     final url = Uri.parse("$baseUrl/api/v1/user/update_user_pic/$uid");
     var request = http.MultipartRequest('PUT', url);

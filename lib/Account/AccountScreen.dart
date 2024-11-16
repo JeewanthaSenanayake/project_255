@@ -18,6 +18,7 @@ class AccountScreen extends StatefulWidget {
 class _AccountScreenState extends State<AccountScreen> {
   String uid;
   _AccountScreenState({required this.uid});
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   // for footer
   int _selectedIndex = 0;
 
@@ -40,7 +41,10 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   dynamic userData;
-  bool isLoading = true, isLoading2 = false;
+  bool isLoading = true, isLoading2 = false, updateShow = false;
+
+  String fname = "", lname = "";
+
   @override
   void initState() {
     // TODO: implement initState
@@ -75,7 +79,6 @@ class _AccountScreenState extends State<AccountScreen> {
       setState(() {
         _imageFile = file;
       });
-      
     } else {
       // User canceled the picker
     }
@@ -184,15 +187,166 @@ class _AccountScreenState extends State<AccountScreen> {
                               )
                             : Container(),
                         Container(
-                          margin: EdgeInsets.only(top: scrnheight * 0.025),
-                          child: Text(
-                            userData['firstName'] + " " + userData['lastName'],
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: scrnwidth * 0.075),
+                          padding: EdgeInsets.only(top: scrnheight * 0.025),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                userData['firstName'] +
+                                    " " +
+                                    userData['lastName'],
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: scrnwidth * 0.075),
+                              ),
+                              IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      updateShow = true;
+                                    });
+                                  },
+                                  icon: Icon(Icons.edit_sharp,
+                                      color: Colors.amber,
+                                      size: scrnwidth * 0.055))
+                            ],
                           ),
                         ),
-                        ElevatedButton(
+                        updateShow
+                            ? Form(
+                                key: _formKey,
+                                child: Column(
+                                  children: [
+                                    Container(
+                                        margin: EdgeInsets.only(
+                                            top: scrnheight * 0.035),
+                                        child: TextFormField(
+                                          style: TextStyle(
+                                            color: Colors.amber,
+                                          ),
+                                          initialValue: userData['firstName'],
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'First Name is required';
+                                            }
+                                            return null;
+                                          },
+                                          onSaved: (text) =>
+                                              fname = text.toString(),
+                                          decoration: InputDecoration(
+                                            labelText: 'First Name',
+                                            labelStyle: TextStyle(
+                                              color: Colors.amber,
+                                            ),
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                          ),
+                                        )),
+                                    Container(
+                                        margin: EdgeInsets.only(
+                                            top: scrnheight * 0.015),
+                                        child: TextFormField(
+                                          style: TextStyle(
+                                            color: Colors.amber,
+                                          ),
+                                          initialValue: userData['lastName'],
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'Last Name is required';
+                                            }
+                                            return null;
+                                          },
+                                          onSaved: (text) =>
+                                              lname = text.toString(),
+                                          decoration: InputDecoration(
+                                            labelText: 'First Name',
+                                            labelStyle: TextStyle(
+                                              color: Colors.amber,
+                                            ),
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                          ),
+                                        )),
+                                    Container(
+                                      margin: EdgeInsets.only(
+                                          top: scrnheight * 0.025),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                right: scrnwidth * 0.025),
+                                            child: ElevatedButton.icon(
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      const Color.fromARGB(
+                                                          255, 255, 116, 106),
+                                                ),
+                                                onPressed: () async {
+                                                  setState(() {
+                                                    updateShow = false;
+                                                  });
+                                                },
+                                                label: Text("Discard"),
+                                                icon: Icon(Icons.close)),
+                                          ),
+                                          ElevatedButton.icon(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor:
+                                                    const Color.fromARGB(
+                                                        255, 106, 255, 114),
+                                              ),
+                                              onPressed: () async {
+                                                _formKey.currentState!.save();
+                                                if (_formKey.currentState!
+                                                    .validate()) {
+                                                  setState(() {
+                                                    isLoading2 = true;
+                                                  });
+                                                  final response =
+                                                      await AuthenticationService()
+                                                          .updateUserNameData({
+                                                    "firstName": fname,
+                                                    "lastName": lname
+                                                  }, uid);
+
+                                                  if (response != false) {
+                                                    setState(() {
+                                                      userData['firstName'] =
+                                                          fname;
+                                                      userData['lastName'] =
+                                                          lname;
+                                                      isLoading2 = false;
+                                                      updateShow = false;
+                                                    });
+                                                  } else {
+                                                    setState(() {
+                                                      isLoading2 = false;
+                                                    });
+                                                  }
+                                                } else {
+                                                  fname = '';
+                                                  lname = '';
+                                                }
+                                              },
+                                              label: Text("Update"),
+                                              icon: Icon(Icons.update)),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : Container(),
+                        Container(
+                          margin: EdgeInsets.only(top: scrnheight * 0.05),
+                          child: ElevatedButton.icon(
                             onPressed: () async {
                               AuthenticationService().SingOut();
                               Navigator.pushReplacement(
@@ -201,8 +355,10 @@ class _AccountScreenState extends State<AccountScreen> {
                                     builder: (context) => LoginScreen()),
                               );
                             },
-                            child: Text("Sing Out")),
-                        Text(userData.toString())
+                            label: Text("Sing Out"),
+                            icon: Icon(Icons.logout),
+                          ),
+                        ),
                       ],
                     ),
                     Positioned(
