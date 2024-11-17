@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:project_225/Home/MapScreen.dart';
@@ -11,6 +12,18 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  final notificationSettings =
+      await FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+  print('APNS Token: $fcmToken');
   // Disable screen rotation
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
