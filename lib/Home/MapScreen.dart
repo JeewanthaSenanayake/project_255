@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_225/Account/AccountScreen.dart';
+import 'package:project_225/Home/DistrictScreen.dart';
+import 'package:project_225/services/MapAndStatsService.dart';
 import 'package:svg_path_parser/svg_path_parser.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart';
@@ -15,8 +17,34 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   String uid;
   _MapScreenState({required this.uid});
-  void onRegionTap(String regionName) {
-    print('Tapped on region: $regionName');
+
+  bool isLoading = false;
+  bool clicked = true;
+  Future<void> onRegionTap(String regionName) async {
+    if (clicked) {
+      debugPrint('Tapped on region: $regionName');
+      setState(() {
+        isLoading = true;
+        clicked = false;
+      });
+
+      dynamic data = null;
+      data = await MapAndStats().getMemberOnDistrict(regionName);
+      if (data != null) {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) =>
+                District(uid: uid, distric: regionName, data: data)));
+        setState(() {
+          isLoading = false;
+          clicked = true;
+        });
+      } else {
+        setState(() {
+          isLoading = false;
+          clicked = true;
+        });
+      }
+    }
   }
 
   // for footer
@@ -38,7 +66,6 @@ class _MapScreenState extends State<MapScreen> {
             MaterialPageRoute(builder: (context) => AccountScreen(uid: uid)));
       }
     });
-    print(index);
   }
 
   @override
@@ -73,6 +100,19 @@ class _MapScreenState extends State<MapScreen> {
                         painter: MapPainter(onRegionTap: onRegionTap),
                       ),
                     ),
+                    isLoading
+                        ? Positioned(
+                            top: scrnheight * 0.35,
+                            left: scrnwidth * 0.35,
+                            child: Image.asset(
+                              "assets/loading.gif",
+                              width: scrnwidth * 0.2,
+                            ),
+                          )
+                        : Positioned(
+                            top: scrnheight * 0.35,
+                            left: scrnwidth * 0.35,
+                            child: Container()),
                   ],
                 ),
               ),
