@@ -25,10 +25,10 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
           isLoading = false;
         });
-        print("Connection Established");
+        debugPrint("Connection Established");
       }
     } catch (_) {
-      print("Connection Not Established");
+      debugPrint("Connection Not Established");
     }
   }
 
@@ -122,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         alignment: Alignment.topRight,
                         child: TextButton(
                             onPressed: () async {
-                              print("Forgot Password?");
+                              debugPrint("Forgot Password?");
                               authService.SingOut();
                             },
                             child: Text(
@@ -177,7 +177,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       GestureDetector(
                         onTap: () {
                           googleSignIn();
-                          print("Google Sign In");
+                          debugPrint("Google Sign In");
                         },
                         child: Container(
                           padding: EdgeInsets.all(scrnheight * 0.01),

@@ -370,7 +370,7 @@ class _AccountScreenState extends State<AccountScreen> {
                             child: IconButton(
                                 onPressed: () async {
                                   await getProfileImage();
-                                  print("Camera");
+                                  debugPrint("Camera");
                                 },
                                 icon: Icon(
                                   Icons.camera_alt,

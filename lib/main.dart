@@ -9,7 +9,7 @@ import 'package:flutter/services.dart';
 
 Future<void> _firebaseBackgroundHandler(RemoteMessage message) async {
   // Handle background message here
-  print('Handling background message: ${message.messageId}');
+  debugPrint('Handling background message: ${message.messageId}');
 }
 
 Future<void> main() async {
@@ -28,7 +28,7 @@ Future<void> main() async {
     sound: true,
   );
   final fcmToken = await FirebaseMessaging.instance.getToken();
-  print('APNS Token: $fcmToken');
+  debugPrint('APNS Token: $fcmToken');
   FirebaseMessaging.onBackgroundMessage(_firebaseBackgroundHandler);
   // Disable screen rotation
   SystemChrome.setPreferredOrientations([
