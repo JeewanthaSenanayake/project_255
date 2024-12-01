@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project_225/Account/AccountScreen.dart';
+
 
 class District extends StatefulWidget {
   String uid, distric;

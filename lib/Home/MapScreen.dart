@@ -31,6 +31,9 @@ class _MapScreenState extends State<MapScreen> {
       dynamic data = null;
       data = await MapAndStats().getMemberOnDistrict(regionName);
       if (data != null) {
+        if (regionName == "national") {
+          regionName = "national list";
+        }
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) =>
                 District(uid: uid, distric: regionName, data: data)));
@@ -99,6 +102,14 @@ class _MapScreenState extends State<MapScreen> {
                       child: CustomPaint(
                         painter: MapPainter(onRegionTap: onRegionTap),
                       ),
+                    ),
+                    Positioned(
+                      left: scrnwidth * 0.45,
+                      child: ElevatedButton(
+                          onPressed: () {
+                            onRegionTap("national");
+                          },
+                          child: Text("National List")),
                     ),
                     isLoading
                         ? Positioned(
