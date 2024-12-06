@@ -98,7 +98,8 @@ class AuthenticationService {
       );
       if (response.statusCode == 200) {
         if (json.decode(response.body).length != 0) {
-          return json.decode(response.body)[0];
+          var decodedResponse = utf8.decode(response.bodyBytes);
+          return jsonDecode(decodedResponse)[0];
         } else {
           return null;
         }
