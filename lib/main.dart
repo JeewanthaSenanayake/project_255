@@ -6,6 +6,8 @@ import 'package:project_225/LoginScreen.dart';
 import 'package:project_225/services/UserServices.dart';
 import 'firebase_options.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'models/user_model.dart';
 
 Future<void> _firebaseBackgroundHandler(RemoteMessage message) async {
   // Handle background message here
@@ -35,7 +37,10 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]).then((_) {
-    runApp(MyApp());
+    runApp(
+      ChangeNotifierProvider(
+      create: (_) => UserModel(),
+      child: MyApp()));
   });
 }
 

@@ -5,6 +5,9 @@ import 'package:project_225/services/MapAndStatsService.dart';
 import 'package:svg_path_parser/svg_path_parser.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart';
+import 'package:project_225/models/user_model.dart';
+import 'package:provider/provider.dart';
+import 'package:project_225/services/UserServices.dart';
 
 class MapScreen extends StatefulWidget {
   String uid;
@@ -71,6 +74,29 @@ class _MapScreenState extends State<MapScreen> {
     });
   }
 
+  Future<void> getUserData() async {
+    Future.microtask(() async {
+      final userModel = Provider.of<UserModel>(context, listen: false);
+      if (userModel.data == null) {
+        setState(() {
+          isLoading = true;
+        });
+        dynamic udata = await AuthenticationService().getUserData(uid);
+        userModel.createUser(udata);
+      }
+    });
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUserData();
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
@@ -79,68 +105,72 @@ class _MapScreenState extends State<MapScreen> {
 
     return Scaffold(
       backgroundColor: Colors.black,
-      body: SingleChildScrollView(
-        child: Container(
-          width: scrnwidth,
-          padding: EdgeInsets.only(top: scrnheight * 0.1),
-          child: Column(
-            children: [
-              GestureDetector(
-                onTapDown: (details) {
-                  // Handle taps on regions based on their path
-                },
-                child: Stack(
-                  children: [
-                    // Display the SVG map
-                    SvgPicture.asset(
-                      'assets/Election_Map_SL.svg',
-                      semanticsLabel: 'Election Map of Sri Lanka',
-                      fit: BoxFit.contain,
-                    ),
-                    // Custom painter to detect clicks on specific paths
-                    Positioned.fill(
-                      child: CustomPaint(
-                        painter: MapPainter(onRegionTap: onRegionTap),
+      body: Consumer<UserModel>(builder: (context, userModel, child) {
+        final data = userModel.data;
+        return SingleChildScrollView(
+          child: Container(
+            width: scrnwidth,
+            padding: EdgeInsets.only(top: scrnheight * 0.1),
+            child: Column(
+              children: [
+                GestureDetector(
+                  onTapDown: (details) {
+                    // Handle taps on regions based on their path
+                  },
+                  child: Stack(
+                    children: [
+                      // Display the SVG map
+                      SvgPicture.asset(
+                        'assets/Election_Map_SL.svg',
+                        semanticsLabel: 'Election Map of Sri Lanka',
+                        fit: BoxFit.contain,
                       ),
-                    ),
-                    Positioned(
-                      left: scrnwidth * 0.45,
-                      child: ElevatedButton(
-                          onPressed: () {
-                            onRegionTap("national");
-                          },
-                          child: Text("National List")),
-                    ),
-                    isLoading
-                        ? Positioned(
-                            top: scrnheight * 0.35,
-                            left: scrnwidth * 0.35,
-                            child: Image.asset(
-                              "assets/loading.gif",
-                              width: scrnwidth * 0.2,
-                            ),
-                          )
-                        : Positioned(
-                            top: scrnheight * 0.35,
-                            left: scrnwidth * 0.35,
-                            child: Container()),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(scrnwidth * 0.02),
-                child: Text(
-                  "මැතිවරන දිත්‍රික්ක තුලින් ඔබ තෝරාගත් මත්‍රීවරුන් මගින් රටට සිදුවන සේවය අනුව දිත්‍රික වර්ණ ගැන්වේ. \n ${uid.toString()} මැතිවරන දිත්‍රික්ක තුලින් ඔබ තෝරාගත් මත්‍රීවරුන් මගින් රටට සිදුවන සේවය අනුව දිත්‍රික වර්ණ ගැන්වේ. \n ${uid.toString()}",
-                  style: TextStyle(
-                    color: Colors.white,
+                      // Custom painter to detect clicks on specific paths
+                      Positioned.fill(
+                        child: CustomPaint(
+                          painter: MapPainter(onRegionTap: onRegionTap),
+                        ),
+                      ),
+                      Positioned(
+                        left: scrnwidth * 0.45,
+                        child: ElevatedButton(
+                            onPressed: () {
+                              onRegionTap("national");
+                            },
+                            child: Text("National List")),
+                      ),
+                      isLoading
+                          ? Positioned(
+                              top: scrnheight * 0.35,
+                              left: scrnwidth * 0.35,
+                              child: Image.asset(
+                                "assets/loading.gif",
+                                width: scrnwidth * 0.2,
+                              ),
+                            )
+                          : Positioned(
+                              top: scrnheight * 0.35,
+                              left: scrnwidth * 0.35,
+                              child: Container()),
+                    ],
                   ),
-                  textAlign: TextAlign.center,
                 ),
-              ),
-            ],
+                Padding(
+                  padding: EdgeInsets.all(scrnwidth * 0.02),
+                  child: Text(
+                    "මැතිවරන දිත්‍රික්ක තුලින් ඔබ තෝරාගත් මත්‍රීවරුන් මගින් රටට සිදුවන සේවය අනුව දිත්‍රික වර්ණ ගැන්වේ. \n ${uid.toString()} මැතිවරන දිත්‍රික්ක තුලින් ඔබ තෝරාගත් මත්‍රීවරුන් මගින් රටට සිදුවන සේවය අනුව දිත්‍රික වර්ණ ගැන්වේ. \n ${uid.toString()}",
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Text(data.toString())
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

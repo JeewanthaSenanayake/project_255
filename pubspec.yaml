@@ -46,6 +46,7 @@ dependencies:
   mime: ^2.0.0
   firebase_messaging: ^15.1.5
   firebase_analytics: ^11.3.5
+  provider: ^6.1.2
   
 
 dev_dependencies:

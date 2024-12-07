@@ -14,6 +14,8 @@ class _MemberProfileState extends State<MemberProfile> {
   String uid;
   dynamic data;
   _MemberProfileState({required this.uid, required this.data});
+
+  String comentString = "";
   @override
   Widget build(BuildContext context) {
     double scrnwidth = MediaQuery.of(context).size.width;
@@ -192,6 +194,11 @@ class _MemberProfileState extends State<MemberProfile> {
                   Align(
                       alignment: Alignment.bottomCenter,
                       child: TextFormField(
+                        onChanged: (value) {
+                          setState(() {
+                            comentString = value.toString();
+                          });
+                        },
                         keyboardType: TextInputType.multiline,
                         maxLines: 3,
                         minLines: 1,
@@ -203,10 +210,13 @@ class _MemberProfileState extends State<MemberProfile> {
                           suffixIcon: IconButton(
                             iconSize: scrnheight * 0.04,
                             icon: Icon(Icons.send),
-                            color: Colors.amber,
+                            color:
+                                comentString == "" ? Colors.grey : Colors.amber,
                             onPressed: () {
-                              // Action when send icon is pressed
-                              print("Message sent");
+                             if(comentString!=""){
+                               print(comentString);
+                             }
+                             
                             },
                           ),
                         ),
