@@ -83,11 +83,10 @@ class _MapScreenState extends State<MapScreen> {
         });
         dynamic udata = await AuthenticationService().getUserData(uid);
         userModel.createUser(udata);
+        setState(() {
+          isLoading = false;
+        });
       }
-    });
-
-    setState(() {
-      isLoading = false;
     });
   }
 

@@ -47,4 +47,21 @@ class MapAndStats {
       return null;
     }
   }
+
+  Future<dynamic> addComment(String id, dynamic coment) async {
+    try {
+      final response = await http.put(
+          Uri.parse("$baseUrl/api/v1/lobbyist/add_comment_for_lobbyist/$id"),
+          headers: {'Content-Type': 'application/json'},
+          body: json.encoder.convert(coment));
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      //print(e);
+      return false;
+    }
+  }
 }
