@@ -14,7 +14,7 @@ class AuthenticationService {
 
   dynamic getCurrentUser() {
     try {
-      return _firebaseAuth.currentUser!.uid;
+      return _firebaseAuth.currentUser?.uid;
     } catch (e) {
       return null;
     }

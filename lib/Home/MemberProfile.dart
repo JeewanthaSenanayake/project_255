@@ -21,6 +21,7 @@ class _MemberProfileState extends State<MemberProfile> {
 
   TextEditingController _controller = TextEditingController();
   String comentString = "";
+  String memberDistrict = "";
   @override
   Widget build(BuildContext context) {
     double scrnwidth = MediaQuery.of(context).size.width;
@@ -68,8 +69,8 @@ class _MemberProfileState extends State<MemberProfile> {
                             };
 
                             Navigator.of(context).pop();
-                            bool res = await MapAndStats()
-                                .addComment(data['id'], comentData);
+                            bool res = await MapAndStats().addComment(
+                                data['id'], comentData, memberDistrict);
                             if (res) {
                               setState(() {
                                 comentData['created_at'] = DateFormat(
@@ -115,8 +116,8 @@ class _MemberProfileState extends State<MemberProfile> {
                             };
 
                             Navigator.of(context).pop();
-                            bool res = await MapAndStats()
-                                .addComment(data['id'], comentData);
+                            bool res = await MapAndStats().addComment(
+                                data['id'], comentData, memberDistrict);
                             if (res) {
                               setState(() {
                                 comentData['created_at'] = DateFormat(
@@ -350,6 +351,9 @@ class _MemberProfileState extends State<MemberProfile> {
                                     ? Colors.grey
                                     : Colors.amber,
                                 onPressed: () {
+                                  setState(() {
+                                    memberDistrict = data['district'];
+                                  });
                                   if (comentString != "") {
                                     _showMyDialog();
                                   }

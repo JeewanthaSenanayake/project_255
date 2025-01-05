@@ -48,10 +48,10 @@ class MapAndStats {
     }
   }
 
-  Future<dynamic> addComment(String id, dynamic coment) async {
+  Future<dynamic> addComment(String id, dynamic coment, String memberDistrict) async {
     try {
       final response = await http.put(
-          Uri.parse("$baseUrl/api/v1/lobbyist/add_comment_for_lobbyist/$id"),
+          Uri.parse("$baseUrl/api/v1/lobbyist/add_comment_for_lobbyist/$id/$memberDistrict"),
           headers: {'Content-Type': 'application/json'},
           body: json.encoder.convert(coment));
       if (response.statusCode == 200) {

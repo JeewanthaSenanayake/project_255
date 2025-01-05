@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   // This widget is the root of your application.
-  dynamic uid = AuthenticationService().getCurrentUser();
+  String? uid = AuthenticationService().getCurrentUser();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
         useMaterial3: true,
       ),
-      home: uid == null ? LoginScreen() : MapScreen(uid: uid),
+      home: uid == null ? LoginScreen() : MapScreen(uid: uid!),
     );
   }
 }
