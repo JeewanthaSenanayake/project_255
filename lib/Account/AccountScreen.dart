@@ -350,7 +350,8 @@ class _AccountScreenState extends State<AccountScreen> {
                                 )
                               : Container(),
                           Container(
-                            margin: EdgeInsets.only(top: scrnheight * 0.05),
+                            margin: EdgeInsets.only(top: scrnheight * 0.5),
+                            width: scrnwidth * 0.85,
                             child: ElevatedButton.icon(
                               onPressed: () async {
                                 AuthenticationService().SingOut();
