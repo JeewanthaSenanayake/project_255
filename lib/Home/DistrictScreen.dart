@@ -82,6 +82,14 @@ class _DistrictState extends State<District> {
                                                 'assets/loadingMan.png'),
                                             image: NetworkImage(
                                                 "${membersData["imgUrl"]}"),
+                                            imageErrorBuilder:
+                                                (context, error, stackTrace) {
+                                              return Image.asset(
+                                                  'assets/loadingMan.png',
+                                                  width: scrnwidth * 0.15,
+                                                  height: scrnwidth * 0.15,
+                                                  fit: BoxFit.cover);
+                                            },
                                             width: scrnwidth * 0.15,
                                             height: scrnwidth * 0.15,
                                             fit: BoxFit.cover,

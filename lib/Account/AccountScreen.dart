@@ -100,6 +100,14 @@ class _AccountScreenState extends State<AccountScreen> {
                                               'assets/loadingMan.png'),
                                           image: NetworkImage(
                                               "${userData['imgUrl']}"),
+                                          imageErrorBuilder:
+                                              (context, error, stackTrace) {
+                                            return Image.asset(
+                                                'assets/loadingMan.png',
+                                                width: scrnwidth * 0.5,
+                                                height: scrnwidth * 0.5,
+                                                fit: BoxFit.cover);
+                                          },
                                           width: scrnwidth * 0.5,
                                           height: scrnwidth * 0.5,
                                           fit: BoxFit.cover,

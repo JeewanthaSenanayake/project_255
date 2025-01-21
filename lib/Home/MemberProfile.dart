@@ -178,6 +178,14 @@ class _MemberProfileState extends State<MemberProfile> {
                                               'assets/loadingMan.png'),
                                           image:
                                               NetworkImage("${data['imgUrl']}"),
+                                          imageErrorBuilder:
+                                              (context, error, stackTrace) {
+                                            return Image.asset(
+                                                'assets/loadingMan.png',
+                                                width: scrnwidth * 0.4,
+                                                height: scrnwidth * 0.4,
+                                                fit: BoxFit.cover);
+                                          },
                                           width: scrnwidth * 0.4,
                                           height: scrnwidth * 0.4,
                                           fit: BoxFit.cover,
@@ -257,12 +265,22 @@ class _MemberProfileState extends State<MemberProfile> {
                               Column(
                                 children: [
                                   ClipOval(
-                                      child: (data['comments'].length != 0
+                                      child: (data['comments'][index]
+                                                  ["user_imgUrl"] !=
+                                              null
                                           ? FadeInImage(
                                               placeholder: const AssetImage(
                                                   'assets/loadingMan.png'),
                                               image: NetworkImage(
                                                   "${data['comments'][index]["user_imgUrl"]}"),
+                                              imageErrorBuilder:
+                                                  (context, error, stackTrace) {
+                                                return Image.asset(
+                                                    'assets/loadingMan.png',
+                                                    width: scrnwidth * 0.1,
+                                                    height: scrnwidth * 0.1,
+                                                    fit: BoxFit.cover);
+                                              },
                                               width: scrnwidth * 0.1,
                                               height: scrnwidth * 0.1,
                                               fit: BoxFit.cover,
@@ -331,6 +349,7 @@ class _MemberProfileState extends State<MemberProfile> {
                       Align(
                           alignment: Alignment.bottomCenter,
                           child: TextFormField(
+                            controller: _controller,
                             onChanged: (value) {
                               setState(() {
                                 comentString = value.toString();
@@ -343,7 +362,7 @@ class _MemberProfileState extends State<MemberProfile> {
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.all(
                                       Radius.circular(scrnheight * 0.03))),
-                              hintText: "Type your message here",
+                              hintText: "Type Your Comment",
                               suffixIcon: IconButton(
                                 iconSize: scrnheight * 0.04,
                                 icon: Icon(Icons.send),
