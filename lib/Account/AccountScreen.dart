@@ -2,8 +2,10 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:project_225/About/AboutScreen.dart';
 import 'package:project_225/Home/MapScreen.dart';
 import 'package:project_225/LoginScreen.dart';
+import 'package:project_225/Notifications/NotificationScreen.dart';
 import 'package:project_225/services/UserServices.dart';
 import 'package:project_225/models/user_model.dart';
 import 'package:provider/provider.dart';
@@ -30,14 +32,14 @@ class _AccountScreenState extends State<AccountScreen> {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => MapScreen(uid: uid)));
       }
-      // if (index == 1) {
-      //   Navigator.of(context)
-      //       .push(MaterialPageRoute(builder: (context) => Oder(uid: uid)));
-      // }
-      // if (index == 2) {
-      //   Navigator.of(context)
-      //       .push(MaterialPageRoute(builder: (context) => cart(uid: uid)));
-      // }
+      if (index == 1) {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => NotificationScreen(uid: uid)));
+      }
+      if (index == 2) {
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => AboutScreen(uid: uid)));
+      }
     });
   }
 
@@ -349,22 +351,6 @@ class _AccountScreenState extends State<AccountScreen> {
                                   ),
                                 )
                               : Container(),
-                          Container(
-                            margin: EdgeInsets.only(top: scrnheight * 0.5),
-                            width: scrnwidth * 0.85,
-                            child: ElevatedButton.icon(
-                              onPressed: () async {
-                                AuthenticationService().SingOut();
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => LoginScreen()),
-                                );
-                              },
-                              label: Text("Sing Out"),
-                              icon: Icon(Icons.logout),
-                            ),
-                          ),
                         ],
                       ),
                       Positioned(
@@ -409,6 +395,22 @@ class _AccountScreenState extends State<AccountScreen> {
                 ),
         );
       }),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Container(
+        margin: EdgeInsets.only(top: scrnheight * 0.5),
+        width: scrnwidth * 0.85,
+        child: ElevatedButton.icon(
+          onPressed: () async {
+            AuthenticationService().SingOut();
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => LoginScreen()),
+            );
+          },
+          label: Text("Sing Out"),
+          icon: Icon(Icons.logout),
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -422,17 +424,17 @@ class _AccountScreenState extends State<AccountScreen> {
             backgroundColor: Color.fromARGB(121, 34, 33, 33),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle_sharp),
-            label: 'Account',
-            backgroundColor: Color.fromARGB(121, 34, 33, 33),
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.help),
             label: 'Help',
             backgroundColor: Color.fromARGB(121, 34, 33, 33),
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle_sharp),
+            label: 'Account',
+            backgroundColor: Color.fromARGB(121, 34, 33, 33),
+          ),
         ],
-        currentIndex: 2,
+        currentIndex: 3,
         selectedItemColor: Colors.amber[800],
         onTap: _onItemTapped,
       ),

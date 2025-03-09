@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_225/Account/AccountScreen.dart';
 import 'package:project_225/Home/DistrictScreen.dart';
+import 'package:project_225/Notifications/NotificationScreen.dart';
 import 'package:project_225/services/MapAndStatsService.dart';
 import 'package:svg_path_parser/svg_path_parser.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -59,15 +60,15 @@ class _MapScreenState extends State<MapScreen> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      // if (index == 1) {
-      //   Navigator.of(context)
-      //       .push(MaterialPageRoute(builder: (context) => HomePage(uid: uid)));
-      // }
+      if (index == 1) {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => NotificationScreen(uid: uid)));
+      }
       // if (index == 2) {
       //   Navigator.of(context)
       //       .push(MaterialPageRoute(builder: (context) => Oder(uid: uid)));
       // }
-      if (index == 2) {
+      if (index == 3) {
         Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => AccountScreen(uid: uid)));
       }
@@ -154,17 +155,17 @@ class _MapScreenState extends State<MapScreen> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.all(scrnwidth * 0.02),
-                  child: Text(
-                    "මැතිවරන දිත්‍රික්ක තුලින් ඔබ තෝරාගත් මත්‍රීවරුන් මගින් රටට සිදුවන සේවය අනුව දිත්‍රික වර්ණ ගැන්වේ. \n ${uid.toString()} මැතිවරන දිත්‍රික්ක තුලින් ඔබ තෝරාගත් මත්‍රීවරුන් මගින් රටට සිදුවන සේවය අනුව දිත්‍රික වර්ණ ගැන්වේ. \n ${uid.toString()}",
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Text(data.toString())
+                // Padding(
+                //   padding: EdgeInsets.all(scrnwidth * 0.02),
+                //   child: Text(
+                //     "මැතිවරන දිත්‍රික්ක තුලින් ඔබ තෝරාගත් මත්‍රීවරුන් මගින් රටට සිදුවන සේවය අනුව දිත්‍රික වර්ණ ගැන්වේ. \n ${uid.toString()} මැතිවරන දිත්‍රික්ක තුලින් ඔබ තෝරාගත් මත්‍රීවරුන් මගින් රටට සිදුවන සේවය අනුව දිත්‍රික වර්ණ ගැන්වේ. \n ${uid.toString()}",
+                //     style: TextStyle(
+                //       color: Colors.white,
+                //     ),
+                //     textAlign: TextAlign.center,
+                //   ),
+                // ),
+                // Text(data.toString())
               ],
             ),
           ),
@@ -183,13 +184,13 @@ class _MapScreenState extends State<MapScreen> {
             backgroundColor: Color.fromARGB(121, 34, 33, 33),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle_sharp),
-            label: 'Account',
+            icon: Icon(Icons.help),
+            label: 'Help',
             backgroundColor: Color.fromARGB(121, 34, 33, 33),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.help),
-            label: 'Help',
+            icon: Icon(Icons.account_circle_sharp),
+            label: 'Account',
             backgroundColor: Color.fromARGB(121, 34, 33, 33),
           ),
         ],
