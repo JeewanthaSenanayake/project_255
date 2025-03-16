@@ -48,10 +48,12 @@ class MapAndStats {
     }
   }
 
-  Future<dynamic> addComment(String id, dynamic coment, String memberDistrict) async {
+  Future<dynamic> addComment(
+      String id, dynamic coment, String memberDistrict) async {
     try {
       final response = await http.put(
-          Uri.parse("$baseUrl/api/v1/lobbyist/add_comment_for_lobbyist/$id/$memberDistrict"),
+          Uri.parse(
+              "$baseUrl/api/v1/lobbyist/add_comment_for_lobbyist/$id/$memberDistrict"),
           headers: {'Content-Type': 'application/json'},
           body: json.encoder.convert(coment));
       if (response.statusCode == 200) {
@@ -62,6 +64,27 @@ class MapAndStats {
     } catch (e) {
       //print(e);
       return false;
+    }
+  }
+
+  Future<dynamic> getMapColors() async {
+    try {
+      final response = await http.get(
+        Uri.parse("$baseUrl/api/v1/map/map_colors"),
+      );
+      if (response.statusCode == 200) {
+        if (json.decode(response.body).length != 0) {
+          var decodedResponse = utf8.decode(response.bodyBytes);
+          return jsonDecode(decodedResponse);
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    } catch (e) {
+      //print(e);
+      return null;
     }
   }
 }

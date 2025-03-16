@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:project_225/Home/MapScreen.dart';
 import 'package:project_225/LoginScreen.dart';
+import 'package:project_225/models/map_color_model.dart';
 import 'package:project_225/services/UserServices.dart';
 import 'firebase_options.dart';
 import 'package:flutter/services.dart';
@@ -37,10 +38,10 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]).then((_) {
-    runApp(
-      ChangeNotifierProvider(
-      create: (_) => UserModel(),
-      child: MyApp()));
+    runApp(MultiProvider(providers: [
+      ChangeNotifierProvider(create: (_) => UserModel()), 
+      ChangeNotifierProvider(create: (_) => MapColorModel()),
+    ], child: MyApp()));
   });
 }
 

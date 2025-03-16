@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_225/Account/AccountScreen.dart';
 import 'package:project_225/Home/DistrictScreen.dart';
 import 'package:project_225/Notifications/NotificationScreen.dart';
+import 'package:project_225/models/map_color_model.dart';
 import 'package:project_225/services/MapAndStatsService.dart';
 import 'package:svg_path_parser/svg_path_parser.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -78,6 +79,7 @@ class _MapScreenState extends State<MapScreen> {
   Future<void> getUserData() async {
     Future.microtask(() async {
       final userModel = Provider.of<UserModel>(context, listen: false);
+      final mapColorModel = Provider.of<MapColorModel>(context, listen: false);
       if (userModel.data == null) {
         setState(() {
           isLoading = true;
@@ -87,6 +89,20 @@ class _MapScreenState extends State<MapScreen> {
         setState(() {
           isLoading = false;
         });
+      }
+
+      if (mapColorModel.data == null) {
+        setState(() {
+          isLoading = true;
+        });
+        dynamic mdata = await MapAndStats().getMapColors();
+        mapColorModel.setMapColors(mdata);
+        setState(() {
+          isLoading = false;
+        });
+      } else {
+        dynamic mdata = await MapAndStats().getMapColors();
+        mapColorModel.setMapColors(mdata);
       }
     });
   }
@@ -128,7 +144,8 @@ class _MapScreenState extends State<MapScreen> {
                       // Custom painter to detect clicks on specific paths
                       Positioned.fill(
                         child: CustomPaint(
-                          painter: MapPainter(onRegionTap: onRegionTap),
+                          painter: MapPainter(
+                              onRegionTap: onRegionTap, context: context),
                         ),
                       ),
                       Positioned(
@@ -155,17 +172,6 @@ class _MapScreenState extends State<MapScreen> {
                     ],
                   ),
                 ),
-                // Padding(
-                //   padding: EdgeInsets.all(scrnwidth * 0.02),
-                //   child: Text(
-                //     "මැතිවරන දිත්‍රික්ක තුලින් ඔබ තෝරාගත් මත්‍රීවරුන් මගින් රටට සිදුවන සේවය අනුව දිත්‍රික වර්ණ ගැන්වේ. \n ${uid.toString()} මැතිවරන දිත්‍රික්ක තුලින් ඔබ තෝරාගත් මත්‍රීවරුන් මගින් රටට සිදුවන සේවය අනුව දිත්‍රික වර්ණ ගැන්වේ. \n ${uid.toString()}",
-                //     style: TextStyle(
-                //       color: Colors.white,
-                //     ),
-                //     textAlign: TextAlign.center,
-                //   ),
-                // ),
-                // Text(data.toString())
               ],
             ),
           ),
@@ -205,8 +211,9 @@ class _MapScreenState extends State<MapScreen> {
 // CustomPainter class to draw regions and handle clicks on SVG paths
 class MapPainter extends CustomPainter {
   final Function(String) onRegionTap;
+  BuildContext context;
 
-  MapPainter({required this.onRegionTap});
+  MapPainter({required this.onRegionTap, required this.context});
   // Example region 1 path data (replace with actual path data from SVG)
   Path colombo = parseSvgPath(
       'M72.076,457.218L74.532,463.766L71.029,464.403L70.99199999999999,464.182C70.99199999999999,464.182,64.984,461.463,60.08299999999999,468.55400000000003C58.76199999999999,470.45200000000006,54.62899999999999,460.365,54.62899999999999,460.365L42.62199999999999,471.818L38.26499999999999,469.08599999999996H38.260999999999996L31.280999999999995,471.23699999999997L32.769999999999996,478.179C31.059999999999995,477.573,28.726999999999997,477.001,26.258999999999997,477.282L26.144999999999996,477.328C25.731999999999996,476.166,25.391999999999996,475.2,25.168999999999997,474.551C24.923999999999996,473.806,24.629999999999995,472.747,24.324999999999996,471.514H24.320999999999994C23.951999999999995,470.044,23.553999999999995,468.315,23.158999999999995,466.507C22.695999999999994,464.44,20.263999999999996,452.202,20.263999999999996,452.202L19.528999999999996,449.634L16.986999999999995,440.74L21.901999999999994,435.834C22.078999999999994,435.117,21.725999999999996,432.97,21.175999999999995,430.425L21.197999999999993,430.44800000000004C21.778999999999993,430.89200000000005,22.582999999999995,431.54300000000006,23.267999999999994,432.21400000000006C24.075999999999993,433.0040000000001,24.737999999999992,433.8380000000001,24.737999999999992,434.4320000000001C24.737999999999992,434.72800000000007,24.728999999999992,435.00000000000006,24.715999999999994,435.2900000000001C24.660999999999994,436.62000000000006,24.510999999999996,437.94900000000007,24.510999999999996,437.95400000000006S24.860999999999997,438.55300000000005,25.386999999999997,439.42500000000007C25.404999999999998,439.46900000000005,25.404999999999998,439.46900000000005,25.386999999999997,439.42500000000007C25.386999999999997,439.42500000000007,28.926999999999996,437.08000000000004,30.468999999999998,436.8620000000001C31.702999999999996,436.6830000000001,34.204,437.0640000000001,35.152,437.2270000000001C35.107,437.9720000000001,37.721000000000004,437.2650000000001,37.076,439.7190000000001C37.009,439.9650000000001,36.904,440.7720000000001,36.904,440.9180000000001L42.622,441.70300000000015L49.17,441.29400000000015L52.442,445.80400000000014L54.488,446.21400000000017L57.759,442.1240000000002L62.806,439.67800000000017L68.465,437.5280000000002L68.81,438.4340000000002L74.528,439.5420000000002L75.77000000000001,441.7790000000002L76.025,442.77100000000024L77.394,448.2000000000002L77.40400000000001,448.2550000000002L70.73800000000001,451.0730000000002L72.076,457.218Z'); // Replace with actual path data
@@ -253,34 +260,80 @@ class MapPainter extends CustomPainter {
   Path kegalla = parseSvgPath(
       'M130.597,409.419L129.78,411.477L124.766,413.275V413.282L119.543,415.15799999999996L115.459,416.79499999999996L111.96000000000001,418.21899999999994L113.209,419.26899999999995V419.26399999999995L114.64200000000001,420.47499999999997L117.501,427.03299999999996L118.727,431.12199999999996L111.774,437.66099999999994V441.7579999999999L113.226,447.42999999999995L117.042,451.79599999999994L120.822,455.26199999999994L120.886,458.1909999999999L120.777,464.90199999999993C120.519,464.50299999999993,120.355,464.25299999999993,120.355,464.25299999999993S115.85900000000001,462.61499999999995,111.361,461.7969999999999C106.869,460.9759999999999,98.678,460.9759999999999,98.678,460.9759999999999L90.89999999999999,459.3389999999999C90.89999999999999,459.3389999999999,85.582,453.19099999999986,84.35999999999999,451.95999999999987C83.40299999999999,451.0029999999999,79.17499999999998,449.03999999999985,77.39099999999999,448.22499999999985L76.02099999999999,442.7959999999999H76.01599999999999L75.767,441.80199999999985L74.524,439.5649999999998L68.806,438.45899999999983L68.461,437.5509999999998L70.199,436.8859999999998L70.089,436.6149999999998L70.761,431.1319999999998L68.61999999999999,423.9649999999998L71.151,419.30999999999983L73.303,418.4089999999998H73.307L68.401,412.26899999999983L71.67399999999999,406.9479999999998L73.312,403.2659999999998L76.175,395.4899999999998L87.964,391.25999999999976L92.139,389.76799999999974C92.139,389.76799999999974,93.36,388.8459999999997,94.694,387.71899999999977C96.019,386.59699999999975,97.453,385.2659999999998,97.857,384.44999999999976C98.27,383.6369999999998,99.907,381.58199999999977,101.442,379.74399999999974C102.97099999999999,377.8939999999997,104.39999999999999,376.25799999999975,104.39999999999999,376.25799999999975L107.43599999999999,377.7859999999998L111.56099999999999,382.1769999999998L113.14999999999999,383.8809999999998L116.071,388.2869999999998L117.437,388.7119999999998H117.442L120.77699999999999,389.7549999999998L125.28299999999999,398.7579999999998L125.692,402.0289999999998L130.597,409.419Z');
 
+  Paint getDistrictColor(dynamic value) {
+    if (value != -1) {
+      double doubleValue = (value is int) ? value.toDouble() : value;
+      if (doubleValue >= 0.5) {
+        double normalized_value = (doubleValue - 0.5) / 0.5;
+        return Paint()
+          ..color = Color.lerp(Color.fromARGB(255, 83, 83, 83), Colors.green,
+                  normalized_value)!
+              .withOpacity(0.85)
+          ..style = PaintingStyle.fill;
+      } else {
+        double normalized_value = doubleValue / 0.5;
+        return Paint()
+          ..color = Color.lerp(Colors.red, Color.fromARGB(255, 83, 83, 83),
+                  normalized_value)!
+              .withOpacity(0.85)
+          ..style = PaintingStyle.fill;
+      }
+    } else {
+      return Paint()
+        ..color = const Color.fromARGB(255, 83, 83, 83).withOpacity(0.85)
+        ..style = PaintingStyle.fill;
+    }
+  }
+
   @override
   void paint(Canvas canvas, Size size) {
-    Paint regionPaint = Paint()
-      ..color = const Color.fromARGB(255, 83, 83, 83).withOpacity(0.5)
-      ..style = PaintingStyle.fill;
+    final mapColorModel = Provider.of<MapColorModel>(context, listen: false);
+    dynamic mapColors = mapColorModel.data;
 
-    canvas.drawPath(colombo, regionPaint);
-    canvas.drawPath(gampaha, regionPaint);
-    canvas.drawPath(kaluthara, regionPaint);
-    canvas.drawPath(mahanuwara, regionPaint);
-    canvas.drawPath(mathale, regionPaint);
-    canvas.drawPath(nuwaraEliya, regionPaint);
-    canvas.drawPath(galle, regionPaint);
-    canvas.drawPath(mathara, regionPaint);
-    canvas.drawPath(hambantota, regionPaint);
-    canvas.drawPath(jaffna, regionPaint);
-    canvas.drawPath(vanni, regionPaint);
-    canvas.drawPath(batticaloa, regionPaint);
-    canvas.drawPath(digamadulla, regionPaint);
-    canvas.drawPath(trinco, regionPaint);
-    canvas.drawPath(kurunagala, regionPaint);
-    canvas.drawPath(puththalama, regionPaint);
-    canvas.drawPath(anuradhapuraya, regionPaint);
-    canvas.drawPath(polonnaruawa, regionPaint);
-    canvas.drawPath(badulla, regionPaint);
-    canvas.drawPath(monaragala, regionPaint);
-    canvas.drawPath(rathnapura, regionPaint);
-    canvas.drawPath(kegalla, regionPaint);
+    canvas.drawPath(colombo,
+        getDistrictColor(mapColors == null ? -1 : mapColors['colombo']));
+    canvas.drawPath(gampaha,
+        getDistrictColor(mapColors == null ? -1 : mapColors['gampaha']));
+    canvas.drawPath(kaluthara,
+        getDistrictColor(mapColors == null ? -1 : mapColors['kaluthara']));
+    canvas.drawPath(mahanuwara,
+        getDistrictColor(mapColors == null ? -1 : mapColors['mahanuwara']));
+    canvas.drawPath(mathale,
+        getDistrictColor(mapColors == null ? -1 : mapColors['mathale']));
+    canvas.drawPath(nuwaraEliya,
+        getDistrictColor(mapColors == null ? -1 : mapColors['nuwaraEliya']));
+    canvas.drawPath(
+        galle, getDistrictColor(mapColors == null ? -1 : mapColors['galle']));
+    canvas.drawPath(mathara,
+        getDistrictColor(mapColors == null ? -1 : mapColors['mathara']));
+    canvas.drawPath(hambantota,
+        getDistrictColor(mapColors == null ? -1 : mapColors['hambantota']));
+    canvas.drawPath(
+        jaffna, getDistrictColor(mapColors == null ? -1 : mapColors['jaffna']));
+    canvas.drawPath(
+        vanni, getDistrictColor(mapColors == null ? -1 : mapColors['vanni']));
+    canvas.drawPath(batticaloa,
+        getDistrictColor(mapColors == null ? -1 : mapColors['batticaloa']));
+    canvas.drawPath(digamadulla,
+        getDistrictColor(mapColors == null ? -1 : mapColors['digamadulla']));
+    canvas.drawPath(
+        trinco, getDistrictColor(mapColors == null ? -1 : mapColors['trinco']));
+    canvas.drawPath(kurunagala,
+        getDistrictColor(mapColors == null ? -1 : mapColors['kurunagala']));
+    canvas.drawPath(puththalama,
+        getDistrictColor(mapColors == null ? -1 : mapColors['puththalama']));
+    canvas.drawPath(anuradhapuraya,
+        getDistrictColor(mapColors == null ? -1 : mapColors['anuradhapuraya']));
+    canvas.drawPath(polonnaruawa,
+        getDistrictColor(mapColors == null ? -1 : mapColors['polonnaruawa']));
+    canvas.drawPath(badulla,
+        getDistrictColor(mapColors == null ? -1 : mapColors['badulla']));
+    canvas.drawPath(monaragala,
+        getDistrictColor(mapColors == null ? -1 : mapColors['monaragala']));
+    canvas.drawPath(rathnapura,
+        getDistrictColor(mapColors == null ? -1 : mapColors['rathnapura']));
+    canvas.drawPath(kegalla,
+        getDistrictColor(mapColors == null ? -1 : mapColors['kegalla']));
   }
 
   @override
