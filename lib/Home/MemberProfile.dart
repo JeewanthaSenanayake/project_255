@@ -223,7 +223,7 @@ class _MemberProfileState extends State<MemberProfile> {
                                   // Background (red color)
                                   Container(
                                     decoration: BoxDecoration(
-                                      color: data['percentage'] != 0
+                                      color: data['percentage'] != -1
                                           ? const Color.fromARGB(
                                               255, 255, 17, 0)
                                           : Colors.grey,
@@ -232,8 +232,10 @@ class _MemberProfileState extends State<MemberProfile> {
                                   ),
                                   // Foreground (green color)
                                   FractionallySizedBox(
-                                    widthFactor: data['percentage'] /
-                                        100, // Calculate width based on percentage
+                                    widthFactor: data['percentage'] == -1
+                                        ? 0
+                                        : data['percentage'] /
+                                            100, // Calculate width based on percentage
                                     child: Container(
                                       decoration: BoxDecoration(
                                         color: const Color.fromARGB(
