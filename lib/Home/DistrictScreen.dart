@@ -30,12 +30,10 @@ class _DistrictState extends State<District> {
       appBar: AppBar(
         title: Text(
           distric.toString().toUpperCase(),
-          style: TextStyle(color: Colors.amber),
+          style: TextStyle(color: Colors.black),
         ),
-        backgroundColor: Colors.transparent,
-        iconTheme: IconThemeData(color: Colors.amber),
+        iconTheme: IconThemeData(color: Colors.black),
       ),
-      backgroundColor: Colors.black,
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.only(
@@ -71,6 +69,22 @@ class _DistrictState extends State<District> {
                       child: Container(
                         margin: EdgeInsets.only(bottom: scrnheight * 0.02),
                         padding: EdgeInsets.all(scrnheight * 0.01),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              offset: Offset(5, 5),
+                              blurRadius: 10,
+                            ),
+                            BoxShadow(
+                              color: Colors.white.withOpacity(0.9),
+                              offset: Offset(-5, -5),
+                              blurRadius: 10,
+                            ),
+                          ],
+                        ),
                         child: Row(
                           children: [
                             Column(
@@ -113,7 +127,7 @@ class _DistrictState extends State<District> {
                                   child: Text(
                                     membersData["name"].toString(),
                                     style: TextStyle(
-                                        color: Colors.amberAccent,
+                                        color: Colors.black87,
                                         fontSize: scrnwidth * 0.05),
                                   ),
                                 ),
@@ -124,7 +138,7 @@ class _DistrictState extends State<District> {
                                   child: Text(
                                     membersData["party"].toString(),
                                     style: TextStyle(
-                                        color: Colors.amberAccent,
+                                        color: Colors.black87,
                                         fontSize: scrnwidth * 0.03),
                                   ),
                                 ),

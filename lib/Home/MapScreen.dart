@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_225/About/AboutScreen.dart';
 import 'package:project_225/Account/AccountScreen.dart';
 import 'package:project_225/Home/DistrictScreen.dart';
 import 'package:project_225/Notifications/NotificationScreen.dart';
@@ -65,10 +66,10 @@ class _MapScreenState extends State<MapScreen> {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => NotificationScreen(uid: uid)));
       }
-      // if (index == 2) {
-      //   Navigator.of(context)
-      //       .push(MaterialPageRoute(builder: (context) => Oder(uid: uid)));
-      // }
+      if (index == 2) {
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => AboutScreen(uid: uid)));
+      }
       if (index == 3) {
         Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => AccountScreen(uid: uid)));
@@ -103,6 +104,7 @@ class _MapScreenState extends State<MapScreen> {
       } else {
         dynamic mdata = await MapAndStats().getMapColors();
         mapColorModel.setMapColors(mdata);
+        setState(() {});
       }
     });
   }
@@ -115,12 +117,34 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     double scrnwidth = MediaQuery.of(context).size.width;
     double scrnheight = MediaQuery.of(context).size.height;
 
+    Color getDistrictColor() {
+      final mapColorModel = Provider.of<MapColorModel>(context, listen: false);
+      dynamic value =
+          mapColorModel.data == null ? -1 : mapColorModel.data['national'];
+
+      if (value != -1) {
+        double doubleValue = (value is int) ? value.toDouble() : value;
+        if (doubleValue >= 0.5) {
+          double normalized_value = (doubleValue - 0.5) / 0.5;
+          return Color.lerp(Color.fromARGB(255, 83, 83, 83), Colors.green,
+                  normalized_value)!
+              .withOpacity(0.85);
+        } else {
+          double normalized_value = doubleValue / 0.5;
+          return Color.lerp(Colors.red, Color.fromARGB(255, 83, 83, 83),
+                  normalized_value)!
+              .withOpacity(0.85);
+        }
+      } else {
+        return const Color.fromARGB(255, 83, 83, 83).withOpacity(0.85);
+      }
+    }
+
     return Scaffold(
-      backgroundColor: Colors.black,
       body: Consumer<UserModel>(builder: (context, userModel, child) {
         final data = userModel.data;
         return SingleChildScrollView(
@@ -154,10 +178,18 @@ class _MapScreenState extends State<MapScreen> {
                       Positioned(
                         left: scrnwidth * 0.45,
                         child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: getDistrictColor(),
+                            ),
                             onPressed: () {
                               onRegionTap("national");
                             },
-                            child: Text("National List")),
+                            child: Text(
+                              "National List",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            )),
                       ),
                       isLoading
                           ? Positioned(

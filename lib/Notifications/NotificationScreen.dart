@@ -26,8 +26,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
             .push(MaterialPageRoute(builder: (context) => MapScreen(uid: uid)));
       }
       if (index == 2) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => AboutScreen(uid: uid)));
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => AboutScreen(uid: uid)));
       }
       if (index == 3) {
         Navigator.of(context).push(
@@ -38,17 +38,15 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     double scrnwidth = MediaQuery.of(context).size.width;
     double scrnheight = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
+        // backgroundColor: Colors.transparent,
         title: Text(
           "Notifications",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black),
         ),
       ),
       body: Consumer<UserModel>(builder: (context, userModel, child) {

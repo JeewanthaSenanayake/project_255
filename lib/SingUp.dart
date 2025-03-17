@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:project_225/services/UserServices.dart';
 
 class SingUp extends StatefulWidget {
@@ -23,10 +24,13 @@ class _SingUpState extends State<SingUp> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     double scrnwidth = MediaQuery.of(context).size.width;
     double scrnheight = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.black,
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
+      ),
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -39,7 +43,7 @@ class _SingUpState extends State<SingUp> {
                   style: TextStyle(
                       fontSize: scrnheight * 0.05,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white),
+                      color: Colors.black),
                 ),
                 SizedBox(height: scrnheight * 0.02),
                 Padding(
@@ -55,14 +59,14 @@ class _SingUpState extends State<SingUp> {
                     decoration: InputDecoration(
                       labelText: 'First Name',
                       labelStyle: TextStyle(
-                        color: Colors.amber,
+                        color: Colors.grey,
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                     style: TextStyle(
-                      color: Colors.amber,
+                      color: Colors.grey,
                     ),
                   ),
                 ),
@@ -79,14 +83,14 @@ class _SingUpState extends State<SingUp> {
                     decoration: InputDecoration(
                       labelText: 'Last Name',
                       labelStyle: TextStyle(
-                        color: Colors.amber,
+                        color: Colors.grey,
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                     style: TextStyle(
-                      color: Colors.amber,
+                      color: Colors.grey,
                     ),
                   ),
                 ),
@@ -108,14 +112,14 @@ class _SingUpState extends State<SingUp> {
                     decoration: InputDecoration(
                       labelText: 'Email',
                       labelStyle: TextStyle(
-                        color: Colors.amber,
+                        color: Colors.grey,
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                     style: TextStyle(
-                      color: Colors.amber,
+                      color: Colors.grey,
                     ),
                   ),
                 ),
@@ -136,14 +140,14 @@ class _SingUpState extends State<SingUp> {
                     decoration: InputDecoration(
                       labelText: 'Password',
                       labelStyle: TextStyle(
-                        color: Colors.amber,
+                        color: Colors.grey,
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                     style: TextStyle(
-                      color: Colors.amber,
+                      color: Colors.grey,
                     ),
                   ),
                 ),
@@ -165,17 +169,17 @@ class _SingUpState extends State<SingUp> {
                     decoration: InputDecoration(
                       labelText: 'Confirm Password',
                       labelStyle: TextStyle(
-                        color: Colors.amber,
+                        color: Colors.grey,
                       ),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                       hintStyle: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                     style: TextStyle(
-                      color: Colors.amber,
+                      color: Colors.grey,
                     ),
                   ),
                 ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:project_225/Home/MapScreen.dart';
 import 'package:project_225/services/UserServices.dart';
 import 'package:project_225/SingUp.dart';
@@ -45,10 +46,10 @@ class _LoginScreenState extends State<LoginScreen> {
   String email = '', password = '';
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     double scrnwidth = MediaQuery.of(context).size.width;
     double scrnheight = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.black,
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -85,11 +86,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             hintStyle: TextStyle(
-                              color: Colors.amber,
+                              color: Colors.grey,
                             ),
                           ),
                           style: TextStyle(
-                            color: Colors.amber,
+                            color: Colors.grey,
                           ),
                         ),
                       ),
@@ -110,11 +111,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             hintStyle: TextStyle(
-                              color: Colors.amber,
+                              color: Colors.grey,
                             ),
                           ),
                           style: TextStyle(
-                            color: Colors.amber,
+                            color: Colors.grey,
                           ),
                         ),
                       ),
@@ -170,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: Text(
                           "or continue with",
                           style: TextStyle(
-                            color: Colors.amber,
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -193,7 +194,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           Text(
                             "Don't have an account?",
                             style: TextStyle(
-                              color: Colors.amber,
+                              color: Colors.black,
                             ),
                           ),
                           TextButton(

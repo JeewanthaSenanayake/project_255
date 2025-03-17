@@ -38,17 +38,15 @@ class _AboutScreenState extends State<AboutScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     double scrnwidth = MediaQuery.of(context).size.width;
     double scrnheight = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
+        // backgroundColor: Colors.transparent,
         title: Text(
           "About",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black),
         ),
       ),
       body: Consumer<UserModel>(builder: (context, userModel, child) {

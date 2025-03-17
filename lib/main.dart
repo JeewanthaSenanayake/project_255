@@ -39,7 +39,7 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]).then((_) {
     runApp(MultiProvider(providers: [
-      ChangeNotifierProvider(create: (_) => UserModel()), 
+      ChangeNotifierProvider(create: (_) => UserModel()),
       ChangeNotifierProvider(create: (_) => MapColorModel()),
     ], child: MyApp()));
   });
@@ -52,10 +52,11 @@ class MyApp extends StatelessWidget {
   String? uid = AuthenticationService().getCurrentUser();
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
         useMaterial3: true,
       ),
       home: uid == null ? LoginScreen() : MapScreen(uid: uid!),

@@ -73,11 +73,9 @@ class _AccountScreenState extends State<AccountScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     double scrnwidth = MediaQuery.of(context).size.width;
     double scrnheight = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Colors.black,
       body: Consumer<UserModel>(builder: (context, userModel, child) {
         final userData = userModel.data;
         return SingleChildScrollView(
@@ -199,7 +197,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                         " " +
                                         userData['lastName'],
                                     style: TextStyle(
-                                        color: Colors.white,
+                                        color: Colors.black,
                                         fontSize: scrnwidth * 0.07),
                                   ),
                                 ),
@@ -210,7 +208,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                       });
                                     },
                                     icon: Icon(Icons.edit_sharp,
-                                        color: Colors.amber,
+                                        color: Colors.grey,
                                         size: scrnwidth * 0.055))
                               ],
                             ),
@@ -225,7 +223,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                               top: scrnheight * 0.035),
                                           child: TextFormField(
                                             style: TextStyle(
-                                              color: Colors.amber,
+                                              color: Colors.grey,
                                             ),
                                             initialValue: userData['firstName'],
                                             validator: (value) {
@@ -240,7 +238,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                             decoration: InputDecoration(
                                               labelText: 'First Name',
                                               labelStyle: TextStyle(
-                                                color: Colors.amber,
+                                                color: Colors.grey,
                                               ),
                                               border: OutlineInputBorder(
                                                 borderRadius:
@@ -253,7 +251,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                               top: scrnheight * 0.015),
                                           child: TextFormField(
                                             style: TextStyle(
-                                              color: Colors.amber,
+                                              color: Colors.grey,
                                             ),
                                             initialValue: userData['lastName'],
                                             validator: (value) {
@@ -268,7 +266,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                             decoration: InputDecoration(
                                               labelText: 'First Name',
                                               labelStyle: TextStyle(
-                                                color: Colors.amber,
+                                                color: Colors.grey,
                                               ),
                                               border: OutlineInputBorder(
                                                 borderRadius:
