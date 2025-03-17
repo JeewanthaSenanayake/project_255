@@ -129,6 +129,9 @@ class _MapScreenState extends State<MapScreen> {
             padding: EdgeInsets.only(top: scrnheight * 0.1),
             child: Column(
               children: [
+                SizedBox(
+                  height: scrnheight * 0.05,
+                ),
                 GestureDetector(
                   onTapDown: (details) {
                     // Handle taps on regions based on their path
