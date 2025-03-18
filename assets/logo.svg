@@ -1,0 +1,19 @@
+<svg height="" version="1.1" width="" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="overflow: hidden; position: relative; left: 0px; top:0px;" viewBox="0 0 255 60">
+  <!-- Background -->
+
+  <desc style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Created with Raphaël 2.3.0 and Mapael undefined (https://www.vincentbroute.fr/mapael/)</desc>
+<defs style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></defs>
+  
+  <!-- Company Name -->
+  <text x="80" y="30" font-family="Arial, sans-serif" font-size="24" fill="gray" font-weight="bold">e</text>
+  <text x="92" y="30" font-family="Arial, sans-serif" font-size="24" fill="green" font-weight="bold">Coders</text>
+
+  
+  <!-- Tagline -->
+  <text x="20" y="45" font-family="Arial, sans-serif" font-size="14" fill="gray">Smart Software for a Smart Future</text>
+  
+  <!-- Coding Symbols -->
+  <text x="0" y="40" font-family="monospace" font-size="44" fill="green">{</text>
+  <text x="228" y="40" font-family="monospace" font-size="44" fill="green">}</text>
+  <!-- <text x="120" y="85" font-family="monospace" font-size="20" fill="green">&lt;/&gt;</text> -->
+</svg>
