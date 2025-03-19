@@ -10,10 +10,10 @@
 
   
   <!-- Tagline -->
-  <text x="20" y="45" font-family="Arial, sans-serif" font-size="14" fill="gray">Smart Software for a Smart Future</text>
+  <text x="26" y="47" font-family="Arial, sans-serif" font-size="14" fill="gray">Smart Software for Smart Future</text>
   
   <!-- Coding Symbols -->
-  <text x="0" y="40" font-family="monospace" font-size="44" fill="green">{</text>
-  <text x="228" y="40" font-family="monospace" font-size="44" fill="green">}</text>
+  <text x="65" y="29" font-family="monospace" font-size="24" fill="green">{</text>
+  <text x="174" y="29" font-family="monospace" font-size="24" fill="green">}</text>
   <!-- <text x="120" y="85" font-family="monospace" font-size="20" fill="green">&lt;/&gt;</text> -->
 </svg>
