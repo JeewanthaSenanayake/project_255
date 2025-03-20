@@ -1,8 +1,10 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:project_225/About/AboutScreen.dart';
 import 'package:project_225/Account/AccountScreen.dart';
 import 'package:project_225/Home/DistrictScreen.dart';
 import 'package:project_225/Notifications/NotificationScreen.dart';
+import 'package:project_225/Notifications/NotificationViewScreen.dart';
 import 'package:project_225/models/map_color_model.dart';
 import 'package:project_225/services/MapAndStatsService.dart';
 import 'package:svg_path_parser/svg_path_parser.dart';
@@ -109,9 +111,52 @@ class _MapScreenState extends State<MapScreen> {
     });
   }
 
+  void listenToMessages() {
+    debugPrint("✅ listenToMessages");
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      debugPrint(
+          "🔹 Foreground Message: ${message.notification?.title}, ${message.data}");
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      debugPrint(
+          "🔹 Notification Clicked: ${message.notification?.title}, ${message.data}");
+
+      // Navigate to Notification Page
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Notificationviewscreen(notiData: message.data),
+        ),
+      );
+    });
+
+    // Handle when the app is launched by a notification
+    FirebaseMessaging.instance
+        .getInitialMessage()
+        .then((RemoteMessage? message) {
+      if (message != null) {
+        debugPrint(
+            "🔹 App Launched by Notification: ${message.notification?.title}, ${message.data}");
+
+        // Navigate to Notification Page
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  Notificationviewscreen(notiData: message.data),
+            ),
+          );
+        });
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    listenToMessages();
     getUserData();
   }
 
@@ -217,22 +262,22 @@ class _MapScreenState extends State<MapScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-            backgroundColor: Color.fromARGB(121, 34, 33, 33),
+            backgroundColor: Colors.grey,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
             label: 'Notifications',
-            backgroundColor: Color.fromARGB(121, 34, 33, 33),
+            backgroundColor: Colors.grey,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.help),
             label: 'Help',
-            backgroundColor: Color.fromARGB(121, 34, 33, 33),
+            backgroundColor: Colors.grey,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle_sharp),
             label: 'Account',
-            backgroundColor: Color.fromARGB(121, 34, 33, 33),
+            backgroundColor: Colors.grey,
           ),
         ],
         currentIndex: 0,

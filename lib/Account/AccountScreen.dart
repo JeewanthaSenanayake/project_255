@@ -94,7 +94,8 @@ class _AccountScreenState extends State<AccountScreen> {
                           Center(
                             child: ClipOval(
                               child: _imageFile == null
-                                  ? (userData['imgUrl'] != null
+                                  ? (userData != null &&
+                                          userData['imgUrl'] != null
                                       ? FadeInImage(
                                           placeholder: const AssetImage(
                                               'assets/loadingMan.png'),

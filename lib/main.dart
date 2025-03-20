@@ -20,7 +20,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  final notificationSettings =
+  NotificationSettings notificationSettings =
       await FirebaseMessaging.instance.requestPermission(
     alert: true,
     announcement: false,
@@ -30,6 +30,14 @@ Future<void> main() async {
     provisional: false,
     sound: true,
   );
+  
+  if (notificationSettings.authorizationStatus ==
+      AuthorizationStatus.authorized) {
+    debugPrint("✅ Permission Granted");
+  } else {
+    debugPrint("❌ Permission Denied");
+  }
+
   final fcmToken = await FirebaseMessaging.instance.getToken();
   debugPrint('APNS Token: $fcmToken');
   FirebaseMessaging.onBackgroundMessage(_firebaseBackgroundHandler);
