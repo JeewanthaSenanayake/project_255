@@ -349,6 +349,9 @@ class _MemberProfileState extends State<MemberProfile> {
                         ),
                       ),
                     )))),
+                    SizedBox(
+                      height: scrnheight * 0.06,
+                    ),
                   ],
                 )));
       }),

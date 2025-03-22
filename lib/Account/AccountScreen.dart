@@ -415,22 +415,22 @@ class _AccountScreenState extends State<AccountScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-            backgroundColor: Color.fromARGB(121, 34, 33, 33),
+            backgroundColor: Colors.grey,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
             label: 'Notifications',
-            backgroundColor: Color.fromARGB(121, 34, 33, 33),
+            backgroundColor: Colors.grey,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.help),
             label: 'Help',
-            backgroundColor: Color.fromARGB(121, 34, 33, 33),
+            backgroundColor: Colors.grey,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle_sharp),
             label: 'Account',
-            backgroundColor: Color.fromARGB(121, 34, 33, 33),
+            backgroundColor: Colors.grey,
           ),
         ],
         currentIndex: 3,

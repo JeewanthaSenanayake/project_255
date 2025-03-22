@@ -30,7 +30,7 @@ Future<void> main() async {
     provisional: false,
     sound: true,
   );
-  
+
   if (notificationSettings.authorizationStatus ==
       AuthorizationStatus.authorized) {
     debugPrint("✅ Permission Granted");
@@ -60,6 +60,8 @@ class MyApp extends StatelessWidget {
   String? uid = AuthenticationService().getCurrentUser();
   @override
   Widget build(BuildContext context) {
+    final userModel = Provider.of<UserModel>(context, listen: false);
+    userModel.setUserId(uid == null ? "" : uid!);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return MaterialApp(
       debugShowCheckedModeBanner: false,

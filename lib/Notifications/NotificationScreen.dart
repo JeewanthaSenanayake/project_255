@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:project_225/About/AboutScreen.dart';
 import 'package:project_225/Account/AccountScreen.dart';
 import 'package:project_225/Home/MapScreen.dart';
+import 'package:project_225/Notifications/NotificationViewScreen.dart';
 import 'package:project_225/models/user_model.dart';
 import 'package:provider/provider.dart';
 
@@ -54,7 +55,24 @@ class _NotificationScreenState extends State<NotificationScreen> {
         return SingleChildScrollView(
           child: Container(
               margin: EdgeInsets.all(scrnwidth * 0.02),
-              child: Text(userData.toString())),
+              child: Column(
+                children: [
+                  Text(userData.toString()),
+                  ElevatedButton(
+                      onPressed: () {
+                        dynamic notiData = {
+                          "title": "Sri Lanaka Won ICC ODI Word Cup",
+                          "notificationId": "",
+                          "imgUrl":
+                              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQDHgli3LTwwXzelzIQ3webW3ExIwDxilLPQ&s",
+                        };
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                Notificationviewscreen(notiData: notiData)));
+                      },
+                      child: Text("Open"))
+                ],
+              )),
         );
       }),
       bottomNavigationBar: BottomNavigationBar(
@@ -62,22 +80,22 @@ class _NotificationScreenState extends State<NotificationScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-            backgroundColor: Color.fromARGB(121, 34, 33, 33),
+            backgroundColor: Colors.grey,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
             label: 'Notifications',
-            backgroundColor: Color.fromARGB(121, 34, 33, 33),
+            backgroundColor: Colors.grey,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.help),
             label: 'Help',
-            backgroundColor: Color.fromARGB(121, 34, 33, 33),
+            backgroundColor: Colors.grey,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle_sharp),
             label: 'Account',
-            backgroundColor: Color.fromARGB(121, 34, 33, 33),
+            backgroundColor: Colors.grey,
           ),
         ],
         currentIndex: 1,
