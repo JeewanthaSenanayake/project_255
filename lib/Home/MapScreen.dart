@@ -104,9 +104,12 @@ class _MapScreenState extends State<MapScreen> {
           isLoading = false;
         });
       } else {
-        dynamic mdata = await MapAndStats().getMapColors();
-        mapColorModel.setMapColors(mdata);
-        setState(() {});
+        if (mapColorModel.colorVersionNew > mapColorModel.colorVersionPre) {
+          dynamic mdata = await MapAndStats().getMapColors();
+          mapColorModel.setMapColors(mdata);
+          mapColorModel.matchColorVersion();
+          setState(() {});
+        }
       }
     });
   }

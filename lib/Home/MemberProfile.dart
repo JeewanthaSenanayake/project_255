@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:project_225/models/map_color_model.dart';
 import 'package:project_225/models/user_model.dart';
 import 'package:project_225/services/MapAndStatsService.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +33,8 @@ class _MemberProfileState extends State<MemberProfile> {
         context: context,
         barrierDismissible: false, // user must tap button!
         builder: (BuildContext context) {
+          final mapColorModel =
+              Provider.of<MapColorModel>(context, listen: false);
           return AlertDialog(
             title: IconButton(
                 onPressed: () {
@@ -80,6 +83,7 @@ class _MemberProfileState extends State<MemberProfile> {
                                 comentString = "";
                                 _controller.clear();
                               });
+                              mapColorModel.updateColorVersion();
                             } else {
                               setState(() {
                                 comentString = "";
@@ -127,6 +131,7 @@ class _MemberProfileState extends State<MemberProfile> {
                                 comentString = "";
                                 _controller.clear();
                               });
+                              mapColorModel.updateColorVersion();
                             } else {
                               setState(() {
                                 comentString = "";
