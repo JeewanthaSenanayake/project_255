@@ -23,4 +23,25 @@ class NotificationService{
       return null;
     }
   }
+
+  Future <dynamic> getNotificationById(String id) async{
+    try {
+      final response = await http.get(
+        Uri.parse("$baseUrl/api/v1/message/messageby_docId?id=$id"),
+      );
+      if (response.statusCode == 200) {
+        if (json.decode(response.body).length != 0) {
+          var decodedResponse = utf8.decode(response.bodyBytes);
+          return jsonDecode(decodedResponse);
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    } catch (e) {
+      //print(e);
+      return null;
+    }
+  }
 }

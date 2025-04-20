@@ -156,6 +156,17 @@ class _MapScreenState extends State<MapScreen> {
     });
   }
 
+  Future<void> _refreshPage() async {
+    // await Future.wait([
+    //   getUserData(),
+    // ]);
+    // setState(() {}); // Refresh UI after both complete
+    final mapColorModel = Provider.of<MapColorModel>(context, listen: false);
+    dynamic mdata = await MapAndStats().getMapColors();
+    mapColorModel.setMapColors(mdata);
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
@@ -193,73 +204,78 @@ class _MapScreenState extends State<MapScreen> {
     }
 
     return Scaffold(
-      body: Consumer<UserModel>(builder: (context, userModel, child) {
-        final data = userModel.data;
-        return SingleChildScrollView(
-          child: Container(
-            width: scrnwidth,
-            padding: EdgeInsets.only(top: scrnheight * 0.1),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: scrnheight * 0.05,
-                ),
-                GestureDetector(
-                  onTapDown: (details) {
-                    // Handle taps on regions based on their path
-                  },
-                  child: Stack(
-                    children: [
-                      // Display the SVG map
-                      SvgPicture.asset(
-                        'assets/Election_Map_SL.svg',
-                        semanticsLabel: 'Election Map of Sri Lanka',
-                        fit: BoxFit.contain,
-                      ),
-                      // Custom painter to detect clicks on specific paths
-                      Positioned.fill(
-                        child: CustomPaint(
-                          painter: MapPainter(
-                              onRegionTap: onRegionTap, context: context),
-                        ),
-                      ),
-                      Positioned(
-                        left: scrnwidth * 0.45,
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: getDistrictColor(),
-                            ),
-                            onPressed: () {
-                              onRegionTap("national");
-                            },
-                            child: Text(
-                              "National List",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                      ),
-                      isLoading
-                          ? Positioned(
-                              top: scrnheight * 0.35,
-                              left: scrnwidth * 0.35,
-                              child: Image.asset(
-                                "assets/loading.gif",
-                                width: scrnwidth * 0.2,
-                              ),
-                            )
-                          : Positioned(
-                              top: scrnheight * 0.35,
-                              left: scrnwidth * 0.35,
-                              child: Container()),
-                    ],
+      body: RefreshIndicator(
+        onRefresh: _refreshPage,
+        color: Colors.red[900],
+        child: Consumer<UserModel>(builder: (context, userModel, child) {
+          final data = userModel.data;
+          return SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Container(
+              width: scrnwidth,
+              padding: EdgeInsets.only(top: scrnheight * 0.1),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: scrnheight * 0.05,
                   ),
-                ),
-              ],
+                  GestureDetector(
+                    onTapDown: (details) {
+                      // Handle taps on regions based on their path
+                    },
+                    child: Stack(
+                      children: [
+                        // Display the SVG map
+                        SvgPicture.asset(
+                          'assets/Election_Map_SL.svg',
+                          semanticsLabel: 'Election Map of Sri Lanka',
+                          fit: BoxFit.contain,
+                        ),
+                        // Custom painter to detect clicks on specific paths
+                        Positioned.fill(
+                          child: CustomPaint(
+                            painter: MapPainter(
+                                onRegionTap: onRegionTap, context: context),
+                          ),
+                        ),
+                        Positioned(
+                          left: scrnwidth * 0.45,
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: getDistrictColor(),
+                              ),
+                              onPressed: () {
+                                onRegionTap("national");
+                              },
+                              child: Text(
+                                "National List",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              )),
+                        ),
+                        isLoading
+                            ? Positioned(
+                                top: scrnheight * 0.35,
+                                left: scrnwidth * 0.35,
+                                child: Image.asset(
+                                  "assets/loading.gif",
+                                  width: scrnwidth * 0.2,
+                                ),
+                              )
+                            : Positioned(
+                                top: scrnheight * 0.35,
+                                left: scrnwidth * 0.35,
+                                child: Container()),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

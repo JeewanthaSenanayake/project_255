@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:project_225/About/AboutScreen.dart';
 import 'package:project_225/Account/AccountScreen.dart';
 import 'package:project_225/Home/MapScreen.dart';
@@ -49,7 +50,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
       String timeAgo;
       String clock = '\u{1F552}';
 
-      if (diff.inDays > 0) {
+      if (diff.inDays >= 365) {
+        timeAgo = DateFormat('MMM d, y').format(createdAt);
+      } else if (diff.inDays > 7 && diff.inDays < 365) {
+        timeAgo = DateFormat('MMM d').format(createdAt);
+      } else if (diff.inDays > 0 && diff.inDays <= 7) {
         timeAgo = "$clock ${diff.inDays}d";
       } else if (diff.inHours > 0) {
         timeAgo = "$clock ${diff.inHours}h";
@@ -112,7 +117,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         children: [
                           for (dynamic notification in snapshot.data)
                             InkWell(
-                              onTap: () async {},
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        Notificationviewscreen(
+                                            notiData: notification)));
+                              },
                               child: Container(
                                 margin:
                                     EdgeInsets.only(bottom: scrnheight * 0.02),
@@ -161,7 +171,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                 height: scrnwidth * 0.175,
                                                 fit: BoxFit.cover,
                                               ))),
-                                    Container(
+                                    SizedBox(
                                       height: scrnwidth * 0.175,
                                       width: scrnwidth * 0.6,
                                       child: Column(
@@ -169,12 +179,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                           Container(
                                             width: scrnwidth * 0.5,
                                             margin: EdgeInsets.only(
-                                                left: scrnwidth * 0.02),
+                                                left: scrnwidth * 0.0075),
                                             child: Text(
                                               notification["title"].toString(),
                                               style: TextStyle(
                                                   color: Colors.black87,
-                                                  fontSize: scrnwidth * 0.05),
+                                                  fontSize: scrnwidth * 0.04),
                                             ),
                                           ),
                                           Spacer(),
