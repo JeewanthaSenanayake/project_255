@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
+
 import '../globals.dart';
 import 'package:http/http.dart' as http;
 
-class NotificationService{
-  Future <dynamic> fetchDataNotification() async{
+class NotificationService {
+  Future<dynamic> fetchDataNotification() async {
     try {
       final response = await http.get(
         Uri.parse("$baseUrl/api/v1/message/all"),
@@ -24,7 +26,7 @@ class NotificationService{
     }
   }
 
-  Future <dynamic> getNotificationById(String id) async{
+  Future<dynamic> getNotificationById(String id) async {
     try {
       final response = await http.get(
         Uri.parse("$baseUrl/api/v1/message/messageby_docId?id=$id"),
@@ -36,6 +38,29 @@ class NotificationService{
         } else {
           return null;
         }
+      } else {
+        return null;
+      }
+    } catch (e) {
+      //print(e);
+      return null;
+    }
+  }
+
+  Future<dynamic> getByPeganition(int limit, dynamic lastDoc) async {
+    try {
+      debugPrint("$limit");
+      debugPrint("$lastDoc");
+      debugPrint("last_doc");
+      String url = lastDoc == ""
+          ? "$baseUrl/api/v1/message/by_pagination?limit=$limit"
+          : "$baseUrl/api/v1/message/by_pagination?limit=$limit&last_doc=$lastDoc";
+      print(url);
+      final response = await http.get(
+        Uri.parse(url),
+      );
+      if (response.statusCode == 200) {
+        return jsonDecode(utf8.decode(response.bodyBytes));
       } else {
         return null;
       }
