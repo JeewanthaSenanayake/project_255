@@ -61,6 +61,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
     final NotiData = await NotificationService().getByPeganition(_pageSize, "");
     NotificationList = NotiData["data"];
     lastDoc = NotiData["lastDocId"];
+    _scrollController.addListener(_scrollListener);
+
     setState(() {});
   }
 
@@ -69,7 +71,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
     final NotiData =
         await NotificationService().getByPeganition(_pageSize, lastDoc);
     if (NotiData["lastDocId"] == null) {
-      _scrollController.dispose();
+      _scrollController.removeListener(_scrollListener);
+      setState(() {
+        _isLoading = false;
+      });
     } else {
       setState(() {
         lastDoc = NotiData["lastDocId"];
@@ -79,19 +84,34 @@ class _NotificationScreenState extends State<NotificationScreen> {
     }
   }
 
+  void _scrollListener() {
+    if (_scrollController.position.pixels >=
+            _scrollController.position.maxScrollExtent - 200 &&
+        !_isLoading) {
+      getPeganitionNotification();
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getNotificationList();
 
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels >=
-              _scrollController.position.maxScrollExtent - 200 &&
-          !_isLoading) {
-        getPeganitionNotification();
-      }
-    });
+    // _scrollController.addListener(() {
+    //   if (_scrollController.position.pixels >=
+    //           _scrollController.position.maxScrollExtent - 200 &&
+    //       !_isLoading) {
+    //     getPeganitionNotification();
+    //   }
+    // });
+    _scrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override

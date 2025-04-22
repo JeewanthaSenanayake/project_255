@@ -49,13 +49,9 @@ class NotificationService {
 
   Future<dynamic> getByPeganition(int limit, dynamic lastDoc) async {
     try {
-      debugPrint("$limit");
-      debugPrint("$lastDoc");
-      debugPrint("last_doc");
       String url = lastDoc == ""
           ? "$baseUrl/api/v1/message/by_pagination?limit=$limit"
           : "$baseUrl/api/v1/message/by_pagination?limit=$limit&last_doc=$lastDoc";
-      print(url);
       final response = await http.get(
         Uri.parse(url),
       );
