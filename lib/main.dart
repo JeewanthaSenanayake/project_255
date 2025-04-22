@@ -41,6 +41,7 @@ Future<void> main() async {
   final fcmToken = await FirebaseMessaging.instance.getToken();
   debugPrint('APNS Token: $fcmToken');
   FirebaseMessaging.onBackgroundMessage(_firebaseBackgroundHandler);
+  FirebaseMessaging.instance.subscribeToTopic('all');
   // Disable screen rotation
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

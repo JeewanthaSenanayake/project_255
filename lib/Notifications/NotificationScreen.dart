@@ -4,9 +4,7 @@ import 'package:project_225/About/AboutScreen.dart';
 import 'package:project_225/Account/AccountScreen.dart';
 import 'package:project_225/Home/MapScreen.dart';
 import 'package:project_225/Notifications/NotificationViewScreen.dart';
-import 'package:project_225/models/user_model.dart';
 import 'package:project_225/services/NotificationService.dart';
-import 'package:provider/provider.dart';
 
 class NotificationScreen extends StatefulWidget {
   String uid;
@@ -49,18 +47,18 @@ class _NotificationScreenState extends State<NotificationScreen> {
     setState(() {
       isLoading = true;
     });
-    final NotiData = await NotificationService().getByPeganition(_pageSize, "");
-    NotificationList = NotiData["data"];
-    lastDoc = NotiData["lastDocId"];
+    final notiData = await NotificationService().getByPeganition(_pageSize, "");
+    NotificationList = notiData["data"];
+    lastDoc = notiData["lastDocId"];
     setState(() {
       isLoading = false;
     });
   }
 
   Future<void> _refreshPage() async {
-    final NotiData = await NotificationService().getByPeganition(_pageSize, "");
-    NotificationList = NotiData["data"];
-    lastDoc = NotiData["lastDocId"];
+    final notiData = await NotificationService().getByPeganition(_pageSize, "");
+    NotificationList = notiData["data"];
+    lastDoc = notiData["lastDocId"];
     _scrollController.addListener(_scrollListener);
 
     setState(() {});
@@ -68,17 +66,17 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   Future<void> getPeganitionNotification() async {
     setState(() => _isLoading = true);
-    final NotiData =
+    final notiData =
         await NotificationService().getByPeganition(_pageSize, lastDoc);
-    if (NotiData["lastDocId"] == null) {
+    if (notiData["lastDocId"] == null) {
       _scrollController.removeListener(_scrollListener);
       setState(() {
         _isLoading = false;
       });
     } else {
       setState(() {
-        lastDoc = NotiData["lastDocId"];
-        NotificationList.addAll(NotiData["data"]);
+        lastDoc = notiData["lastDocId"];
+        NotificationList.addAll(notiData["data"]);
         _isLoading = false;
       });
     }

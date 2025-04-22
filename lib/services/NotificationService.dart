@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
 
 import '../globals.dart';
 import 'package:http/http.dart' as http;
@@ -29,15 +28,11 @@ class NotificationService {
   Future<dynamic> getNotificationById(String id) async {
     try {
       final response = await http.get(
-        Uri.parse("$baseUrl/api/v1/message/messageby_docId?id=$id"),
+        Uri.parse("$baseUrl/api/v1/messageby_docId?id=$id"),
       );
+
       if (response.statusCode == 200) {
-        if (json.decode(response.body).length != 0) {
-          var decodedResponse = utf8.decode(response.bodyBytes);
-          return jsonDecode(decodedResponse);
-        } else {
-          return null;
-        }
+        return jsonDecode(utf8.decode(response.bodyBytes));
       } else {
         return null;
       }
