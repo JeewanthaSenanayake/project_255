@@ -36,15 +36,20 @@ class _MemberProfileState extends State<MemberProfile> {
           final mapColorModel =
               Provider.of<MapColorModel>(context, listen: false);
           return AlertDialog(
-            title: IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                alignment: Alignment.topRight,
-                icon: Icon(
-                  Icons.close_rounded,
-                  color: Colors.red,
-                )),
+            title: Row(
+              children: [
+                Text("Add this Comment as"),
+                IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    alignment: Alignment.topRight,
+                    icon: Icon(
+                      Icons.close_rounded,
+                      color: Colors.red,
+                    )),
+              ],
+            ),
             backgroundColor: const Color.fromARGB(242, 255, 255, 255),
             content: SingleChildScrollView(
                 child: Text(
