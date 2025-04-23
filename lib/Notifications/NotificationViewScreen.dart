@@ -81,11 +81,16 @@ class _NotificationviewscreenState extends State<Notificationviewscreen> {
                     ),
                   ),
                 ),
-                Text(
-                  notiData['title'].toString(),
-                  style: TextStyle(
-                      color: const Color.fromARGB(167, 0, 0, 0),
-                      fontSize: scrnwidth * 0.055),
+                Container(
+                  margin: EdgeInsets.all(scrnwidth * 0.04),
+                  child: Text(
+                    notiData['title'].toString(),
+                    style: TextStyle(
+                        color: const Color.fromARGB(167, 0, 0, 0),
+                        fontSize: scrnwidth * 0.057,
+                        fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
                 Align(
                     alignment: Alignment.centerLeft,
@@ -95,35 +100,41 @@ class _NotificationviewscreenState extends State<Notificationviewscreen> {
                               Container(
                                   margin: EdgeInsets.all(scrnwidth * 0.04),
                                   child: Text(
-                                    notiData['body'],
+                                    notiData['body'].replaceAll(r'\n', '\n\n'),
                                     textAlign: TextAlign.left,
+                                    style:
+                                        TextStyle(fontSize: scrnwidth * 0.0375),
                                   )),
-                              ElevatedButton(
-                                  onPressed: () async {
-                                    setState(() {
-                                      isLoading = true;
-                                    });
+                              notiData.containsKey("memberId") &&
+                                      notiData["memberId"] != null
+                                  ? ElevatedButton(
+                                      onPressed: () async {
+                                        setState(() {
+                                          isLoading = true;
+                                        });
 
-                                    dynamic data = null;
-                                    data = await MapAndStats()
-                                        .getMemberById(notiData['memberId']);
-                                    if (data != null) {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  MemberProfile(
-                                                      uid: userModel.userId,
-                                                      data: data)));
-                                      setState(() {
-                                        isLoading = false;
-                                      });
-                                    } else {
-                                      setState(() {
-                                        isLoading = false;
-                                      });
-                                    }
-                                  },
-                                  child: Text("Add Comment")),
+                                        dynamic data = null;
+                                        data = await MapAndStats()
+                                            .getMemberById(
+                                                notiData['memberId']);
+                                        if (data != null) {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MemberProfile(
+                                                          uid: userModel.userId,
+                                                          data: data)));
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                        } else {
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                        }
+                                      },
+                                      child: Text("Add Comment"))
+                                  : Container(),
                             ],
                           )
                         : FutureBuilder(
@@ -148,37 +159,41 @@ class _NotificationviewscreenState extends State<Notificationviewscreen> {
                                         margin:
                                             EdgeInsets.all(scrnwidth * 0.04),
                                         child: Text(
-                                          snapshot.data['body'],
+                                          snapshot.data['body']
+                                              .replaceAll(r'\n', '\n\n'),
                                           textAlign: TextAlign.left,
                                         )),
-                                    ElevatedButton(
-                                        onPressed: () async {
-                                          setState(() {
-                                            isLoading = true;
-                                          });
+                                    notiData.containsKey("memberId") &&
+                                            notiData["memberId"] != null
+                                        ? ElevatedButton(
+                                            onPressed: () async {
+                                              setState(() {
+                                                isLoading = true;
+                                              });
 
-                                          dynamic data = null;
-                                          data = await MapAndStats()
-                                              .getMemberById(
-                                                  snapshot.data['memberId']);
-                                          if (data != null) {
-                                            Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        MemberProfile(
-                                                            uid: userModel
-                                                                .userId,
-                                                            data: data)));
-                                            setState(() {
-                                              isLoading = false;
-                                            });
-                                          } else {
-                                            setState(() {
-                                              isLoading = false;
-                                            });
-                                          }
-                                        },
-                                        child: Text("Add Comment")),
+                                              dynamic data = null;
+                                              data = await MapAndStats()
+                                                  .getMemberById(snapshot
+                                                      .data['memberId']);
+                                              if (data != null) {
+                                                Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            MemberProfile(
+                                                                uid: userModel
+                                                                    .userId,
+                                                                data: data)));
+                                                setState(() {
+                                                  isLoading = false;
+                                                });
+                                              } else {
+                                                setState(() {
+                                                  isLoading = false;
+                                                });
+                                              }
+                                            },
+                                            child: Text("Add Comment"))
+                                        : Container(),
                                   ],
                                 );
                               } else {

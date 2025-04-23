@@ -4,7 +4,9 @@ import 'package:project_225/About/AboutScreen.dart';
 import 'package:project_225/Account/AccountScreen.dart';
 import 'package:project_225/Home/MapScreen.dart';
 import 'package:project_225/Notifications/NotificationViewScreen.dart';
+import 'package:project_225/models/user_model.dart';
 import 'package:project_225/services/NotificationService.dart';
+import 'package:provider/provider.dart';
 
 class NotificationScreen extends StatefulWidget {
   String uid;
@@ -49,7 +51,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
     });
     final notiData = await NotificationService().getByPeganition(_pageSize, "");
     NotificationList = notiData["data"];
-    lastDoc = notiData["lastDocId"];
+    if (NotificationList.length > 0) {
+      lastDoc = notiData["lastDocId"];
+    }
     setState(() {
       isLoading = false;
     });
@@ -96,13 +100,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
     super.initState();
     getNotificationList();
 
-    // _scrollController.addListener(() {
-    //   if (_scrollController.position.pixels >=
-    //           _scrollController.position.maxScrollExtent - 200 &&
-    //       !_isLoading) {
-    //     getPeganitionNotification();
-    //   }
-    // });
     _scrollController.addListener(_scrollListener);
   }
 
@@ -150,102 +147,109 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ),
       ),
       body: RefreshIndicator(
-        onRefresh: _refreshPage,
-        color: Colors.red[900],
-        child: isLoading
-            ? Center(
-                child: Image.asset(
-                  "assets/loading.gif",
-                  width: scrnwidth * 0.2,
-                ),
-              )
-            : ListView.builder(
-                controller: _scrollController,
-                itemCount: NotificationList.length,
-                itemBuilder: (context, index) {
-                  if (index <= NotificationList.length) {
-                    final notification = NotificationList[index];
-                    return InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => Notificationviewscreen(
-                                notiData: notification)));
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(bottom: scrnheight * 0.02),
-                        padding: EdgeInsets.all(scrnheight * 0.01),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
-                              offset: Offset(5, 5),
-                              blurRadius: 10,
-                            ),
-                            BoxShadow(
-                              color: Colors.white.withOpacity(0.9),
-                              offset: Offset(-5, -5),
-                              blurRadius: 10,
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                                child: FadeInImage(
-                              placeholder:
-                                  const AssetImage('assets/loadingMan.png'),
-                              image: NetworkImage("${notification["imgUrl"]}"),
-                              imageErrorBuilder: (context, error, stackTrace) {
-                                return Image.asset('assets/loadingMan.png',
-                                    width: scrnwidth * 0.3,
-                                    height: scrnwidth * 0.175,
-                                    fit: BoxFit.cover);
-                              },
-                              width: scrnwidth * 0.3,
-                              height: scrnwidth * 0.175,
-                              fit: BoxFit.cover,
-                            )),
-                            SizedBox(
-                              height: scrnwidth * 0.175,
-                              width: scrnwidth * 0.6,
-                              child: Column(
-                                children: [
-                                  Container(
-                                    width: scrnwidth * 0.5,
-                                    margin: EdgeInsets.only(
-                                        left: scrnwidth * 0.0075),
-                                    child: Text(
-                                      notification["title"].toString(),
-                                      style: TextStyle(
-                                          color: Colors.black87,
-                                          fontSize: scrnwidth * 0.04),
-                                    ),
+          onRefresh: _refreshPage,
+          color: Colors.red[900],
+          child: isLoading
+              ? Center(
+                  child: Image.asset(
+                    "assets/loading.gif",
+                    width: scrnwidth * 0.2,
+                  ),
+                )
+              : NotificationList.length > 0
+                  ? ListView.builder(
+                      controller: _scrollController,
+                      itemCount: NotificationList.length,
+                      physics: AlwaysScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        if (index <= NotificationList.length) {
+                          final notification = NotificationList[index];
+                          return InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => Notificationviewscreen(
+                                      notiData: notification)));
+                            },
+                            child: Container(
+                              margin:
+                                  EdgeInsets.only(bottom: scrnheight * 0.02),
+                              padding: EdgeInsets.all(scrnheight * 0.01),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(16),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.2),
+                                    offset: Offset(5, 5),
+                                    blurRadius: 10,
                                   ),
-                                  Spacer(),
-                                  Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: Text(
-                                        getTimeDiff(notification["created_at"]),
-                                        textAlign: TextAlign.right,
-                                      ))
+                                  BoxShadow(
+                                    color: Colors.white.withOpacity(0.9),
+                                    offset: Offset(-5, -5),
+                                    blurRadius: 10,
+                                  ),
                                 ],
                               ),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  } else {
-                    return Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Center(child: CircularProgressIndicator()),
-                    );
-                  }
-                }),
-      ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                      child: FadeInImage(
+                                    placeholder: const AssetImage(
+                                        'assets/loadingMan.png'),
+                                    image: NetworkImage(
+                                        "${notification["imgUrl"]}"),
+                                    imageErrorBuilder:
+                                        (context, error, stackTrace) {
+                                      return Image.asset(
+                                          'assets/loadingMan.png',
+                                          width: scrnwidth * 0.3,
+                                          height: scrnwidth * 0.175,
+                                          fit: BoxFit.cover);
+                                    },
+                                    width: scrnwidth * 0.3,
+                                    height: scrnwidth * 0.175,
+                                    fit: BoxFit.cover,
+                                  )),
+                                  SizedBox(
+                                    height: scrnwidth * 0.175,
+                                    width: scrnwidth * 0.6,
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          width: scrnwidth * 0.5,
+                                          margin: EdgeInsets.only(
+                                              left: scrnwidth * 0.0075),
+                                          child: Text(
+                                            notification["title"].toString(),
+                                            style: TextStyle(
+                                                color: Colors.black87,
+                                                fontSize: scrnwidth * 0.04),
+                                          ),
+                                        ),
+                                        Spacer(),
+                                        Align(
+                                            alignment: Alignment.bottomRight,
+                                            child: Text(
+                                              getTimeDiff(
+                                                  notification["created_at"]),
+                                              textAlign: TextAlign.right,
+                                            ))
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        } else {
+                          return Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Center(child: CircularProgressIndicator()),
+                          );
+                        }
+                      })
+                  : Center(child: Text("No Notifications"))),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
