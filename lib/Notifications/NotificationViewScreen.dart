@@ -41,167 +41,190 @@ class _NotificationviewscreenState extends State<Notificationviewscreen> {
       body: Consumer<UserModel>(builder: (context, userModel, child) {
         final userData = userModel.data;
         return SingleChildScrollView(
-          child: Container(
-            margin: EdgeInsets.all(scrnwidth * 0.02),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Center(
-                  child: Container(
-                    width: scrnwidth * 0.9,
-                    margin: EdgeInsets.only(bottom: scrnheight * 0.025),
-                    // height: scrnwidth * 0.1,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.white.withOpacity(0.2),
-                          offset: Offset(5, 5),
-                          blurRadius: 10,
+          child: Stack(
+            children: [
+              Container(
+                margin: EdgeInsets.all(scrnwidth * 0.02),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: Container(
+                        width: scrnwidth * 0.9,
+                        margin: EdgeInsets.only(bottom: scrnheight * 0.025),
+                        // height: scrnwidth * 0.1,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.white.withOpacity(0.2),
+                              offset: Offset(5, 5),
+                              blurRadius: 10,
+                            ),
+                            BoxShadow(
+                              color: Colors.white.withOpacity(0.9),
+                              offset: Offset(-5, -5),
+                              blurRadius: 10,
+                            ),
+                          ],
                         ),
-                        BoxShadow(
-                          color: Colors.white.withOpacity(0.9),
-                          offset: Offset(-5, -5),
-                          blurRadius: 10,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: FadeInImage(
+                            placeholder:
+                                const AssetImage('assets/loadingMan.png'),
+                            image: NetworkImage(notiData['imgUrl']),
+                            imageErrorBuilder: (context, error, stackTrace) {
+                              return Image.asset('assets/loadingMan.png',
+                                  fit: BoxFit.cover);
+                            },
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: FadeInImage(
-                        placeholder: const AssetImage('assets/loadingMan.png'),
-                        image: NetworkImage(notiData['imgUrl']),
-                        imageErrorBuilder: (context, error, stackTrace) {
-                          return Image.asset('assets/loadingMan.png',
-                              fit: BoxFit.cover);
-                        },
-                        fit: BoxFit.cover,
                       ),
                     ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.all(scrnwidth * 0.04),
-                  child: Text(
-                    notiData['title'].toString(),
-                    style: TextStyle(
-                        color: const Color.fromARGB(167, 0, 0, 0),
-                        fontSize: scrnwidth * 0.057,
-                        fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Align(
-                    alignment: Alignment.centerLeft,
-                    child: notiData.containsKey("body")
-                        ? Column(
-                            children: [
-                              Container(
-                                  margin: EdgeInsets.all(scrnwidth * 0.04),
-                                  child: Text(
-                                    notiData['body'].replaceAll(r'\n', '\n\n'),
-                                    textAlign: TextAlign.left,
-                                    style:
-                                        TextStyle(fontSize: scrnwidth * 0.0375),
-                                  )),
-                              notiData.containsKey("memberId") &&
-                                      notiData["memberId"] != null
-                                  ? ElevatedButton(
-                                      onPressed: () async {
-                                        setState(() {
-                                          isLoading = true;
-                                        });
+                    Container(
+                      margin: EdgeInsets.all(scrnwidth * 0.04),
+                      child: Text(
+                        notiData['title'].toString(),
+                        style: TextStyle(
+                            color: const Color.fromARGB(167, 0, 0, 0),
+                            fontSize: scrnwidth * 0.057,
+                            fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Align(
+                        alignment: Alignment.centerLeft,
+                        child: notiData.containsKey("body")
+                            ? Column(
+                                children: [
+                                  Container(
+                                      margin: EdgeInsets.all(scrnwidth * 0.04),
+                                      child: Text(
+                                        notiData['body']
+                                            .replaceAll(r'\n', '\n\n'),
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            fontSize: scrnwidth * 0.0375),
+                                      )),
+                                  notiData.containsKey("memberId") &&
+                                          notiData["memberId"] != null
+                                      ? ElevatedButton(
+                                          onPressed: () async {
+                                            setState(() {
+                                              isLoading = true;
+                                            });
 
-                                        dynamic data = null;
-                                        data = await MapAndStats()
-                                            .getMemberById(
-                                                notiData['memberId']);
-                                        if (data != null) {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      MemberProfile(
-                                                          uid: userModel.userId,
-                                                          data: data)));
-                                          setState(() {
-                                            isLoading = false;
-                                          });
-                                        } else {
-                                          setState(() {
-                                            isLoading = false;
-                                          });
-                                        }
-                                      },
-                                      child: Text("Add Comment"))
-                                  : Container(),
-                            ],
-                          )
-                        : FutureBuilder(
-                            future: NotificationService().getNotificationById(
-                                notiData["notificationId"]),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(
-                                  child: Image.asset(
-                                    "assets/loading.gif",
-                                    width: scrnwidth * 0.2,
-                                  ),
-                                ); // Show loading spinner
-                              } else if (snapshot.hasError) {
-                                return Text(
-                                    'Error: ${snapshot.error}'); // Show error message
-                              } else if (snapshot.hasData) {
-                                return Column(
-                                  children: [
-                                    Container(
-                                        margin:
-                                            EdgeInsets.all(scrnwidth * 0.04),
-                                        child: Text(
-                                          snapshot.data['body']
-                                              .replaceAll(r'\n', '\n\n'),
-                                          textAlign: TextAlign.left,
-                                        )),
-                                    notiData.containsKey("memberId") &&
-                                            notiData["memberId"] != null
-                                        ? ElevatedButton(
-                                            onPressed: () async {
+                                            dynamic data = null;
+                                            data = await MapAndStats()
+                                                .getMemberById(
+                                                    notiData['memberId']);
+                                            if (data != null) {
+                                              Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          MemberProfile(
+                                                              uid: userModel
+                                                                  .userId,
+                                                              data: data)));
                                               setState(() {
-                                                isLoading = true;
+                                                isLoading = false;
                                               });
+                                            } else {
+                                              setState(() {
+                                                isLoading = false;
+                                              });
+                                            }
+                                          },
+                                          child: Text("Add Comment"))
+                                      : Container(),
+                                ],
+                              )
+                            : FutureBuilder(
+                                future: NotificationService()
+                                    .getNotificationById(
+                                        notiData["notificationId"]),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(
+                                      child: Image.asset(
+                                        "assets/loading.gif",
+                                        width: scrnwidth * 0.2,
+                                      ),
+                                    ); // Show loading spinner
+                                  } else if (snapshot.hasError) {
+                                    return Text(
+                                        'Error: ${snapshot.error}'); // Show error message
+                                  } else if (snapshot.hasData) {
+                                    return Column(
+                                      children: [
+                                        Container(
+                                            margin: EdgeInsets.all(
+                                                scrnwidth * 0.04),
+                                            child: Text(
+                                              snapshot.data['body']
+                                                  .replaceAll(r'\n', '\n\n'),
+                                              textAlign: TextAlign.left,
+                                            )),
+                                        snapshot.data.containsKey("memberId") &&
+                                                snapshot.data["memberId"] !=
+                                                    null
+                                            ? ElevatedButton(
+                                                onPressed: () async {
+                                                  setState(() {
+                                                    isLoading = true;
+                                                  });
 
-                                              dynamic data = null;
-                                              data = await MapAndStats()
-                                                  .getMemberById(snapshot
-                                                      .data['memberId']);
-                                              if (data != null) {
-                                                Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            MemberProfile(
-                                                                uid: userModel
-                                                                    .userId,
-                                                                data: data)));
-                                                setState(() {
-                                                  isLoading = false;
-                                                });
-                                              } else {
-                                                setState(() {
-                                                  isLoading = false;
-                                                });
-                                              }
-                                            },
-                                            child: Text("Add Comment"))
-                                        : Container(),
-                                  ],
-                                );
-                              } else {
-                                return Text('No data found');
-                              }
-                            })),
-              ],
-            ),
+                                                  dynamic data = null;
+                                                  data = await MapAndStats()
+                                                      .getMemberById(snapshot
+                                                          .data['memberId']);
+                                                  if (data != null) {
+                                                    Navigator.of(context).push(
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                MemberProfile(
+                                                                    uid: userModel
+                                                                        .userId,
+                                                                    data:
+                                                                        data)));
+                                                    setState(() {
+                                                      isLoading = false;
+                                                    });
+                                                  } else {
+                                                    setState(() {
+                                                      isLoading = false;
+                                                    });
+                                                  }
+                                                },
+                                                child: Text("Add Comment"))
+                                            : Container(),
+                                      ],
+                                    );
+                                  } else {
+                                    return Text('No data found');
+                                  }
+                                })),
+                  ],
+                ),
+              ),
+              isLoading
+                  ? Positioned(
+                      top: scrnheight * 0.35,
+                      left: scrnwidth * 0.35,
+                      child: Image.asset(
+                        "assets/loading.gif",
+                        width: scrnwidth * 0.2,
+                      ),
+                    )
+                  : Positioned(
+                      top: scrnheight * 0.35,
+                      left: scrnwidth * 0.35,
+                      child: Container()),
+            ],
           ),
         );
       }),
