@@ -193,8 +193,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Container(
-                                      child: FadeInImage(
+                                  FadeInImage(
                                     placeholder: const AssetImage(
                                         'assets/loadingMan.png'),
                                     image: NetworkImage(
@@ -210,21 +209,23 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     width: scrnwidth * 0.3,
                                     height: scrnwidth * 0.175,
                                     fit: BoxFit.cover,
-                                  )),
+                                  ),
                                   SizedBox(
                                     height: scrnwidth * 0.175,
                                     width: scrnwidth * 0.6,
                                     child: Column(
                                       children: [
                                         Container(
-                                          width: scrnwidth * 0.5,
-                                          margin: EdgeInsets.only(
-                                              left: scrnwidth * 0.0075),
+                                          width: scrnwidth * 0.6,
+                                          padding: EdgeInsets.only(
+                                              left: scrnwidth * 0.0175),
                                           child: Text(
                                             notification["title"].toString(),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                                 color: Colors.black87,
-                                                fontSize: scrnwidth * 0.04),
+                                                fontSize: scrnwidth * 0.035),
                                           ),
                                         ),
                                         Spacer(),
