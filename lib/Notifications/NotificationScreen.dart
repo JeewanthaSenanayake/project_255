@@ -4,6 +4,7 @@ import 'package:project_225/About/AboutScreen.dart';
 import 'package:project_225/Account/AccountScreen.dart';
 import 'package:project_225/Home/MapScreen.dart';
 import 'package:project_225/Notifications/NotificationViewScreen.dart';
+import 'package:project_225/globals.dart';
 import 'package:project_225/models/user_model.dart';
 import 'package:project_225/services/NotificationService.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +44,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   String lastDoc = "";
   final ScrollController _scrollController = ScrollController();
   bool _isLoading = false;
-  final int _pageSize = 10;
+  final int _pageSize = noticationLimit;
 
   Future<void> getNotificationList() async {
     setState(() {

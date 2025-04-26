@@ -28,7 +28,7 @@ class MapAndStats {
   Future<dynamic> getMemberById(String id) async {
     try {
       final response = await http.get(
-        Uri.parse("$baseUrl/api/v1/lobbyist/get_lobbyist_by_id/$id"),
+        Uri.parse("$baseUrl/api/v1/lobbyist/get_lobbyist_by_id/$id/$commentLimit"),
       );
       if (response.statusCode == 200) {
         if (json.decode(response.body).length != 0) {
@@ -38,6 +38,26 @@ class MapAndStats {
         } else {
           return null;
         }
+      } else {
+        return null;
+      }
+    } catch (e) {
+      //print(e);
+      return null;
+    }
+  }
+
+  Future<dynamic> getByPeganition(
+      String lobbyistId, int commentLimit, dynamic nextStartFrom) async {
+    try {
+      String url =
+          "$baseUrl/api/v1/lobbyist/get_lobbyist_by_id_with_paganition/$lobbyistId/$commentLimit/$nextStartFrom";
+      print(url);
+      final response = await http.get(
+        Uri.parse(url),
+      );
+      if (response.statusCode == 200) {
+        return jsonDecode(utf8.decode(response.bodyBytes));
       } else {
         return null;
       }
