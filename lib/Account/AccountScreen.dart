@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:project_225/About/AboutScreen.dart';
 import 'package:project_225/Home/MapScreen.dart';
 import 'package:project_225/LoginScreen.dart';
@@ -43,7 +44,7 @@ class _AccountScreenState extends State<AccountScreen> {
     });
   }
 
-  bool isLoading = false, isLoading2 = false, updateShow = false;
+  bool isLoading = false, isLoading2 = false, updateShow = true;
 
   String fname = "", lname = "";
 
@@ -69,6 +70,60 @@ class _AccountScreenState extends State<AccountScreen> {
     } else {
       // User canceled the picker
     }
+  }
+
+  bool fnameUpdate = false, lnameUpdate = false;
+
+  void valueChangeFinder(String value, String input, dynamic userData) {
+    if (input == "fname") {
+      if (value != userData['firstName']) {
+        setState(() {
+          updateShow = true;
+          fnameUpdate = true;
+        });
+      } else {
+        setState(() {
+          fnameUpdate = false;
+        });
+      }
+    }
+
+    if (input == "lname") {
+      if (value != userData['lastName']) {
+        setState(() {
+          updateShow = true;
+          lnameUpdate = true;
+        });
+      } else {
+        setState(() {
+          lnameUpdate = false;
+        });
+      }
+    }
+  }
+
+  PackageInfo _packageInfo = PackageInfo(
+    appName: 'Unknown',
+    packageName: 'Unknown',
+    version: 'Unknown',
+    buildNumber: 'Unknown',
+    buildSignature: 'Unknown',
+    installerStore: 'Unknown',
+  );
+
+  late Key _fieldKey;
+  @override
+  void initState() {
+    super.initState();
+    _fieldKey = UniqueKey();
+    _initPackageInfo();
+  }
+
+  Future<void> _initPackageInfo() async {
+    final info = await PackageInfo.fromPlatform();
+    setState(() {
+      _packageInfo = info;
+    });
   }
 
   @override
@@ -202,80 +257,132 @@ class _AccountScreenState extends State<AccountScreen> {
                                         fontSize: scrnwidth * 0.07),
                                   ),
                                 ),
-                                IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        updateShow = true;
-                                      });
-                                    },
-                                    icon: Icon(Icons.edit_sharp,
-                                        color: Colors.grey,
-                                        size: scrnwidth * 0.055))
                               ],
                             ),
                           ),
-                          updateShow
-                              ? Form(
-                                  key: _formKey,
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                          margin: EdgeInsets.only(
-                                              top: scrnheight * 0.035),
-                                          child: TextFormField(
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                            ),
-                                            initialValue: userData['firstName'],
-                                            validator: (value) {
-                                              if (value == null ||
-                                                  value.isEmpty) {
-                                                return 'First Name is required';
-                                              }
-                                              return null;
-                                            },
-                                            onSaved: (text) =>
-                                                fname = text.toString(),
-                                            decoration: InputDecoration(
-                                              labelText: 'First Name',
-                                              labelStyle: TextStyle(
-                                                color: Colors.grey,
-                                              ),
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                              ),
-                                            ),
-                                          )),
-                                      Container(
-                                          margin: EdgeInsets.only(
-                                              top: scrnheight * 0.015),
-                                          child: TextFormField(
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                            ),
-                                            initialValue: userData['lastName'],
-                                            validator: (value) {
-                                              if (value == null ||
-                                                  value.isEmpty) {
-                                                return 'Last Name is required';
-                                              }
-                                              return null;
-                                            },
-                                            onSaved: (text) =>
-                                                lname = text.toString(),
-                                            decoration: InputDecoration(
-                                              labelText: 'First Name',
-                                              labelStyle: TextStyle(
-                                                color: Colors.grey,
-                                              ),
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                              ),
-                                            ),
-                                          )),
-                                      Container(
+                          Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                // Text(userData.toString()),
+                                Container(
+                                    margin: EdgeInsets.only(
+                                        top: scrnheight * 0.045),
+                                    child: TextFormField(
+                                      key: _fieldKey,
+                                      onChanged: (value) {
+                                        valueChangeFinder(
+                                            value, 'fname', userData);
+                                      },
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                      ),
+                                      initialValue: userData['firstName'],
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'First Name is required';
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (text) =>
+                                          fname = text.toString(),
+                                      decoration: InputDecoration(
+                                        labelText: 'First Name',
+                                        labelStyle: TextStyle(
+                                          color: Colors.grey,
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                    )),
+                                Container(
+                                    margin: EdgeInsets.only(
+                                        top: scrnheight * 0.015),
+                                    child: TextFormField(
+                                      key: _fieldKey,
+                                      onChanged: (value) {
+                                        valueChangeFinder(
+                                            value, 'lname', userData);
+                                      },
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                      ),
+                                      initialValue: userData['lastName'],
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Last Name is required';
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (text) =>
+                                          lname = text.toString(),
+                                      decoration: InputDecoration(
+                                        labelText: 'Last Name',
+                                        labelStyle: TextStyle(
+                                          color: Colors.grey,
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                    )),
+                                Container(
+                                    margin: EdgeInsets.only(
+                                        top: scrnheight * 0.015),
+                                    child: TextFormField(
+                                      enabled: false,
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                      ),
+                                      initialValue: userData['email'],
+                                      decoration: InputDecoration(
+                                        labelText: 'Email',
+                                        labelStyle: TextStyle(
+                                          color: Colors.grey,
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                    )),
+                                Container(
+                                    margin: EdgeInsets.only(
+                                        top: scrnheight * 0.015),
+                                    child: TextFormField(
+                                      key: _fieldKey,
+                                      onChanged: (value) {
+                                        valueChangeFinder(
+                                            value, 'lname', userData);
+                                      },
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                      ),
+                                      initialValue: userData['lastName'],
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Last Name is required';
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (text) =>
+                                          lname = text.toString(),
+                                      decoration: InputDecoration(
+                                        labelText: 'Phone',
+                                        labelStyle: TextStyle(
+                                          color: Colors.grey,
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                    )),
+                                ((lnameUpdate || fnameUpdate) && updateShow)
+                                    ? Container(
                                         margin: EdgeInsets.only(
                                             top: scrnheight * 0.025),
                                         child: Row(
@@ -294,6 +401,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                                   ),
                                                   onPressed: () async {
                                                     setState(() {
+                                                      _fieldKey = UniqueKey();
                                                       updateShow = false;
                                                     });
                                                   },
@@ -345,11 +453,11 @@ class _AccountScreenState extends State<AccountScreen> {
                                                 icon: Icon(Icons.update)),
                                           ],
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              : Container(),
+                                      )
+                                    : Container(),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                       Positioned(
@@ -394,48 +502,71 @@ class _AccountScreenState extends State<AccountScreen> {
                 ),
         );
       }),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Container(
-        margin: EdgeInsets.only(top: scrnheight * 0.5),
-        width: scrnwidth * 0.85,
-        child: ElevatedButton.icon(
-          onPressed: () async {
-            AuthenticationService().SingOut();
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => LoginScreen()),
-            );
-          },
-          label: Text("Sing Out"),
-          icon: Icon(Icons.logout),
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-            backgroundColor: Colors.grey,
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: Container(
+      //   margin: EdgeInsets.only(top: scrnheight * 0.5),
+      //   width: scrnwidth * 0.85,
+      //   child: ElevatedButton.icon(
+      //     onPressed: () async {
+      //       AuthenticationService().SingOut();
+      //       Navigator.pushReplacement(
+      //         context,
+      //         MaterialPageRoute(builder: (context) => LoginScreen()),
+      //       );
+      //     },
+      //     label: Text("Sing Out"),
+      //     icon: Icon(Icons.logout),
+      //   ),
+      // ),
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+              margin: EdgeInsets.only(bottom: scrnheight * 0.005),
+              child: Center(child: Text("VERSION ${_packageInfo.version}"))),
+          Container(
+            margin: EdgeInsets.only(bottom: scrnheight * 0.004),
+            width: scrnwidth * 1,
+            child: ElevatedButton.icon(
+              onPressed: () async {
+                AuthenticationService().SingOut();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                );
+              },
+              label: Text("Sing Out"),
+              icon: Icon(Icons.logout),
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: 'Notifications',
-            backgroundColor: Colors.grey,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.help),
-            label: 'Help',
-            backgroundColor: Colors.grey,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle_sharp),
-            label: 'Account',
-            backgroundColor: Colors.grey,
+          BottomNavigationBar(
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Home',
+                backgroundColor: Colors.grey,
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.notifications),
+                label: 'Notifications',
+                backgroundColor: Colors.grey,
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.help),
+                label: 'Help',
+                backgroundColor: Colors.grey,
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.account_circle_sharp),
+                label: 'Account',
+                backgroundColor: Colors.grey,
+              ),
+            ],
+            currentIndex: 3,
+            selectedItemColor: Colors.amber[800],
+            onTap: _onItemTapped,
           ),
         ],
-        currentIndex: 3,
-        selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
       ),
     );
   }

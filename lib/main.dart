@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:project_225/Home/MapScreen.dart';
 import 'package:project_225/LoginScreen.dart';
 import 'package:project_225/models/map_color_model.dart';
@@ -17,6 +18,8 @@ Future<void> _firebaseBackgroundHandler(RemoteMessage message) async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Get version info
+  await PackageInfo.fromPlatform();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
