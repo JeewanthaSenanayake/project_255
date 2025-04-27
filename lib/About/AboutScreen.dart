@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:project_225/Account/AccountScreen.dart';
-import 'package:project_225/Home/MapScreen.dart';
-import 'package:project_225/Notifications/NotificationScreen.dart';
+import 'package:project_225/Widgets/comman_widgets.dart';
 import 'package:project_225/models/user_model.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -19,24 +16,6 @@ class AboutScreen extends StatefulWidget {
 class _AboutScreenState extends State<AboutScreen> {
   String uid;
   _AboutScreenState({required this.uid});
-  int _selectedIndex = 0;
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      if (index == 0) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => MapScreen(uid: uid)));
-      }
-      if (index == 1) {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => NotificationScreen(uid: uid)));
-      }
-      if (index == 3) {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => AccountScreen(uid: uid)));
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,33 +81,7 @@ class _AboutScreenState extends State<AboutScreen> {
           ),
         ));
       }),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-            backgroundColor: Colors.grey,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: 'Notifications',
-            backgroundColor: Colors.grey,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.help),
-            label: 'Help',
-            backgroundColor: Colors.grey,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle_sharp),
-            label: 'Account',
-            backgroundColor: Colors.grey,
-          ),
-        ],
-        currentIndex: 2,
-        selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
-      ),
+      bottomNavigationBar: CommanWidgets(context, uid).footerWidgets(0),
     );
   }
 }

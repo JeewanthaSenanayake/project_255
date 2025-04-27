@@ -1,10 +1,8 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:project_225/About/AboutScreen.dart';
-import 'package:project_225/Account/AccountScreen.dart';
 import 'package:project_225/Home/DistrictScreen.dart';
-import 'package:project_225/Notifications/NotificationScreen.dart';
 import 'package:project_225/Notifications/NotificationViewScreen.dart';
+import 'package:project_225/Widgets/comman_widgets.dart';
 import 'package:project_225/models/map_color_model.dart';
 import 'package:project_225/services/MapAndStatsService.dart';
 import 'package:svg_path_parser/svg_path_parser.dart';
@@ -56,27 +54,6 @@ class _MapScreenState extends State<MapScreen> {
         });
       }
     }
-  }
-
-  // for footer
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      if (index == 1) {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => NotificationScreen(uid: uid)));
-      }
-      if (index == 2) {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => AboutScreen(uid: uid)));
-      }
-      if (index == 3) {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => AccountScreen(uid: uid)));
-      }
-    });
   }
 
   Future<void> getUserData() async {
@@ -204,106 +181,79 @@ class _MapScreenState extends State<MapScreen> {
     }
 
     return Scaffold(
-      body: RefreshIndicator(
-        onRefresh: _refreshPage,
-        color: Colors.red[900],
-        child: Consumer<UserModel>(builder: (context, userModel, child) {
-          final data = userModel.data;
-          return SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            child: Container(
-              width: scrnwidth,
-              padding: EdgeInsets.only(top: scrnheight * 0.1),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: scrnheight * 0.05,
-                  ),
-                  GestureDetector(
-                    onTapDown: (details) {
-                      // Handle taps on regions based on their path
-                    },
-                    child: Stack(
-                      children: [
-                        // Display the SVG map
-                        SvgPicture.asset(
-                          'assets/Election_Map_SL.svg',
-                          semanticsLabel: 'Election Map of Sri Lanka',
-                          fit: BoxFit.contain,
-                        ),
-                        // Custom painter to detect clicks on specific paths
-                        Positioned.fill(
-                          child: CustomPaint(
-                            painter: MapPainter(
-                                onRegionTap: onRegionTap, context: context),
-                          ),
-                        ),
-                        Positioned(
-                          left: scrnwidth * 0.45,
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: getDistrictColor(),
-                              ),
-                              onPressed: () {
-                                onRegionTap("national");
-                              },
-                              child: Text(
-                                "National List",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              )),
-                        ),
-                        isLoading
-                            ? Positioned(
-                                top: scrnheight * 0.35,
-                                left: scrnwidth * 0.35,
-                                child: Image.asset(
-                                  "assets/loading.gif",
-                                  width: scrnwidth * 0.2,
-                                ),
-                              )
-                            : Positioned(
-                                top: scrnheight * 0.35,
-                                left: scrnwidth * 0.35,
-                                child: Container()),
-                      ],
+        body: RefreshIndicator(
+          onRefresh: _refreshPage,
+          color: Colors.red[900],
+          child: Consumer<UserModel>(builder: (context, userModel, child) {
+            final data = userModel.data;
+            return SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Container(
+                width: scrnwidth,
+                padding: EdgeInsets.only(top: scrnheight * 0.1),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: scrnheight * 0.05,
                     ),
-                  ),
-                ],
+                    GestureDetector(
+                      onTapDown: (details) {
+                        // Handle taps on regions based on their path
+                      },
+                      child: Stack(
+                        children: [
+                          // Display the SVG map
+                          SvgPicture.asset(
+                            'assets/Election_Map_SL.svg',
+                            semanticsLabel: 'Election Map of Sri Lanka',
+                            fit: BoxFit.contain,
+                          ),
+                          // Custom painter to detect clicks on specific paths
+                          Positioned.fill(
+                            child: CustomPaint(
+                              painter: MapPainter(
+                                  onRegionTap: onRegionTap, context: context),
+                            ),
+                          ),
+                          Positioned(
+                            left: scrnwidth * 0.45,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: getDistrictColor(),
+                                ),
+                                onPressed: () {
+                                  onRegionTap("national");
+                                },
+                                child: Text(
+                                  "National List",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                )),
+                          ),
+                          isLoading
+                              ? Positioned(
+                                  top: scrnheight * 0.35,
+                                  left: scrnwidth * 0.35,
+                                  child: Image.asset(
+                                    "assets/loading.gif",
+                                    width: scrnwidth * 0.2,
+                                  ),
+                                )
+                              : Positioned(
+                                  top: scrnheight * 0.35,
+                                  left: scrnwidth * 0.35,
+                                  child: Container()),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        }),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-            backgroundColor: Colors.grey,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: 'Notifications',
-            backgroundColor: Colors.grey,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.help),
-            label: 'Help',
-            backgroundColor: Colors.grey,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle_sharp),
-            label: 'Account',
-            backgroundColor: Colors.grey,
-          ),
-        ],
-        currentIndex: 0,
-        selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
-      ),
-    );
+            );
+          }),
+        ),
+        bottomNavigationBar: CommanWidgets(context, uid).footerWidgets(0));
   }
 }
 
