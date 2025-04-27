@@ -231,6 +231,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           }
                         })
                     : Center(child: Text("No Notifications"))),
-        bottomNavigationBar: CommanWidgets(context, uid).footerWidgets(1));
+        bottomNavigationBar: CommanWidgets(context, uid).footerWidgets(2));
   }
 }

@@ -85,7 +85,10 @@ class _NotificationviewscreenState extends State<Notificationviewscreen> {
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.all(scrnwidth * 0.04),
+                      margin: EdgeInsets.only(
+                          top: scrnwidth * 0.04,
+                          left: scrnwidth * 0.04,
+                          right: scrnwidth * 0.04),
                       child: Text(
                         notiData['title'].toString(),
                         style: TextStyle(
@@ -95,6 +98,7 @@ class _NotificationviewscreenState extends State<Notificationviewscreen> {
                         textAlign: TextAlign.center,
                       ),
                     ),
+                    Divider(),
                     Align(
                         alignment: Alignment.centerLeft,
                         child: notiData.containsKey("body")

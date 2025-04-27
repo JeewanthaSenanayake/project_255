@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:project_225/About/AboutScreen.dart';
 import 'package:project_225/LoginScreen.dart';
 import 'package:project_225/Widgets/comman_widgets.dart';
 import 'package:project_225/services/UserServices.dart';
@@ -245,8 +246,8 @@ class _AccountScreenState extends State<AccountScreen> {
                               children: [
                                 // Text(userData.toString()),
                                 Container(
-                                    margin: EdgeInsets.only(
-                                        top: scrnheight * 0.045),
+                                    margin:
+                                        EdgeInsets.only(top: scrnheight * 0.03),
                                     child: TextFormField(
                                       key: _fieldKey,
                                       onChanged: (value) {
@@ -337,41 +338,6 @@ class _AccountScreenState extends State<AccountScreen> {
                                         ),
                                       ),
                                     )),
-                                Container(
-                                    margin: EdgeInsets.only(
-                                        top: scrnheight * 0.015),
-                                    child: TextFormField(
-                                      key: _fieldKey,
-                                      onChanged: (value) {
-                                        valueChangeFinder(
-                                            value, 'lname', userData);
-                                      },
-                                      style: TextStyle(
-                                        color: Colors.grey,
-                                      ),
-                                      initialValue: userData['lastName'],
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Last Name is required';
-                                        }
-                                        return null;
-                                      },
-                                      onSaved: (text) =>
-                                          lname = text.toString(),
-                                      decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.symmetric(
-                                            vertical: inputVertical,
-                                            horizontal: inputHorizontal),
-                                        labelText: 'Phone',
-                                        labelStyle: TextStyle(
-                                          color: Colors.grey,
-                                        ),
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                      ),
-                                    )),
                                 ((lnameUpdate || fnameUpdate) && updateShow)
                                     ? Container(
                                         margin: EdgeInsets.only(
@@ -449,6 +415,38 @@ class _AccountScreenState extends State<AccountScreen> {
                               ],
                             ),
                           ),
+                          Container(
+                              margin: EdgeInsets.only(
+                                top: scrnheight * 0.0025,
+                              ),
+                              child: Divider()),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: TextButton.icon(
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        AboutScreen(uid: uid)));
+                              },
+                              label: Text("About"),
+                              icon: Icon(Icons.info_outline),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: TextButton.icon(
+                              onPressed: () {
+                                AuthenticationService().SingOut();
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginScreen()),
+                                );
+                              },
+                              label: Text("Sing Out"),
+                              icon: Icon(Icons.logout_outlined),
+                            ),
+                          ),
                         ],
                       ),
                       Positioned(
@@ -493,43 +491,12 @@ class _AccountScreenState extends State<AccountScreen> {
                 ),
         );
       }),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      // floatingActionButton: Container(
-      //   margin: EdgeInsets.only(top: scrnheight * 0.5),
-      //   width: scrnwidth * 0.85,
-      //   child: ElevatedButton.icon(
-      //     onPressed: () async {
-      //       AuthenticationService().SingOut();
-      //       Navigator.pushReplacement(
-      //         context,
-      //         MaterialPageRoute(builder: (context) => LoginScreen()),
-      //       );
-      //     },
-      //     label: Text("Sing Out"),
-      //     icon: Icon(Icons.logout),
-      //   ),
-      // ),
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
               margin: EdgeInsets.only(bottom: scrnheight * 0.005),
               child: Center(child: Text("VERSION ${_packageInfo.version}"))),
-          Container(
-            margin: EdgeInsets.only(bottom: scrnheight * 0.004),
-            width: scrnwidth * 1,
-            child: ElevatedButton.icon(
-              onPressed: () async {
-                AuthenticationService().SingOut();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
-                );
-              },
-              label: Text("Sing Out"),
-              icon: Icon(Icons.logout),
-            ),
-          ),
           CommanWidgets(context, uid).footerWidgets(3),
         ],
       ),

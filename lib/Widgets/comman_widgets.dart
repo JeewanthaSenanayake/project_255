@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:project_225/About/AboutScreen.dart';
 import 'package:project_225/Account/AccountScreen.dart';
 import 'package:project_225/Home/MapScreen.dart';
-import 'package:project_225/Notifications/NotificationScreen.dart';
+import 'package:project_225/MenberList/member_list.dart';
+import 'package:project_225/Notifications/notification_screen.dart';
 
 class CommanWidgets {
   BuildContext context;
@@ -13,12 +13,12 @@ class CommanWidgets {
     if (index == 0) {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => MapScreen(uid: uid)));
-    } else if (index == 1) {
+    } else if (index == 2) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => NotificationScreen(uid: uid)));
-    } else if (index == 2) {
+    } else if (index == 1) {
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => AboutScreen(uid: uid)));
+          .push(MaterialPageRoute(builder: (context) => MemberList(uid: uid)));
     } else if (index == 3) {
       Navigator.of(context).push(
           MaterialPageRoute(builder: (context) => AccountScreen(uid: uid)));
@@ -34,13 +34,13 @@ class CommanWidgets {
           backgroundColor: Colors.grey,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.notifications),
-          label: 'Notifications',
+          icon: Icon(Icons.people_alt),
+          label: 'Members',
           backgroundColor: Colors.grey,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.help),
-          label: 'Help',
+          icon: Icon(Icons.notifications),
+          label: 'Notifications',
           backgroundColor: Colors.grey,
         ),
         BottomNavigationBarItem(

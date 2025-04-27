@@ -23,7 +23,7 @@ class _AboutScreenState extends State<AboutScreen> {
     double scrnheight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        // automaticallyImplyLeading: false,
         // backgroundColor: Colors.transparent,
         title: Text(
           "About",
@@ -81,7 +81,6 @@ class _AboutScreenState extends State<AboutScreen> {
           ),
         ));
       }),
-      bottomNavigationBar: CommanWidgets(context, uid).footerWidgets(2),
     );
   }
 }
