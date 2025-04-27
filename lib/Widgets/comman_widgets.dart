@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:project_225/Account/AccountScreen.dart';
 import 'package:project_225/Home/MapScreen.dart';
@@ -52,6 +54,40 @@ class CommanWidgets {
       currentIndex: currentIndex,
       selectedItemColor: Colors.amber[800],
       onTap: _onItemTapped,
+    );
+  }
+
+  void showPopUp() {
+    showDialog(
+      context: context,
+      barrierDismissible:
+          false, // Prevent dismissing the dialog by tapping outside
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Column(
+            children: [
+              Spacer(),
+              Row(
+                children: [
+                  Spacer(),
+                  IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: Icon(
+                        Icons.close_rounded,
+                        color: Colors.red,
+                      ))
+                ],
+              ),
+              Image.asset(
+                "assets/home_guide.png",
+                // width: scrnwidth * 0.4,
+              ),
+              Spacer(),
+            ],
+          ),
+        );
+      },
     );
   }
 }

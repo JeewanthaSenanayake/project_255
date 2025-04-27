@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:project_225/Home/DistrictScreen.dart';
@@ -147,6 +149,9 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      CommanWidgets(context, uid).showPopUp();
+    });
     listenToMessages();
     getUserData();
   }
