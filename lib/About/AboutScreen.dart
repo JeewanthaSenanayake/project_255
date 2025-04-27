@@ -81,7 +81,7 @@ class _AboutScreenState extends State<AboutScreen> {
           ),
         ));
       }),
-      bottomNavigationBar: CommanWidgets(context, uid).footerWidgets(0),
+      bottomNavigationBar: CommanWidgets(context, uid).footerWidgets(2),
     );
   }
 }

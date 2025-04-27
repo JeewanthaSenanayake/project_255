@@ -110,6 +110,8 @@ class _AccountScreenState extends State<AccountScreen> {
     return Scaffold(
       body: Consumer<UserModel>(builder: (context, userModel, child) {
         final userData = userModel.data;
+        final inputVertical = scrnheight * 0.001;
+        final inputHorizontal = scrnwidth * 0.03;
         return SingleChildScrollView(
           child: isLoading == false
               ? Container(
@@ -264,6 +266,9 @@ class _AccountScreenState extends State<AccountScreen> {
                                       onSaved: (text) =>
                                           fname = text.toString(),
                                       decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: inputVertical,
+                                            horizontal: inputHorizontal),
                                         labelText: 'First Name',
                                         labelStyle: TextStyle(
                                           color: Colors.grey,
@@ -296,6 +301,9 @@ class _AccountScreenState extends State<AccountScreen> {
                                       onSaved: (text) =>
                                           lname = text.toString(),
                                       decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: inputVertical,
+                                            horizontal: inputHorizontal),
                                         labelText: 'Last Name',
                                         labelStyle: TextStyle(
                                           color: Colors.grey,
@@ -316,6 +324,9 @@ class _AccountScreenState extends State<AccountScreen> {
                                       ),
                                       initialValue: userData['email'],
                                       decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: inputVertical,
+                                            horizontal: inputHorizontal),
                                         labelText: 'Email',
                                         labelStyle: TextStyle(
                                           color: Colors.grey,
@@ -348,6 +359,9 @@ class _AccountScreenState extends State<AccountScreen> {
                                       onSaved: (text) =>
                                           lname = text.toString(),
                                       decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: inputVertical,
+                                            horizontal: inputHorizontal),
                                         labelText: 'Phone',
                                         labelStyle: TextStyle(
                                           color: Colors.grey,
