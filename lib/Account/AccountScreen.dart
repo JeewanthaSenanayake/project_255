@@ -423,6 +423,10 @@ class _AccountScreenState extends State<AccountScreen> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: TextButton.icon(
+                              style: ButtonStyle(
+                                foregroundColor: WidgetStateProperty.all<Color>(
+                                    Colors.black),
+                              ),
                               onPressed: () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) =>
@@ -435,6 +439,10 @@ class _AccountScreenState extends State<AccountScreen> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: TextButton.icon(
+                              style: ButtonStyle(
+                                foregroundColor: WidgetStateProperty.all<Color>(
+                                    Colors.black),
+                              ),
                               onPressed: () {
                                 AuthenticationService().SingOut();
                                 Navigator.pushReplacement(

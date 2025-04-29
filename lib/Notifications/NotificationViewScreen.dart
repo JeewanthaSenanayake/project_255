@@ -142,7 +142,11 @@ class _NotificationviewscreenState extends State<Notificationviewscreen> {
                                               });
                                             }
                                           },
-                                          child: Text("Add Comment"))
+                                          child: Text(
+                                            "Add Comment",
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ))
                                       : Container(),
                                 ],
                               )
@@ -204,7 +208,11 @@ class _NotificationviewscreenState extends State<Notificationviewscreen> {
                                                     });
                                                   }
                                                 },
-                                                child: Text("Add Comment"))
+                                                child: Text(
+                                                  "Add Comment",
+                                                  style: TextStyle(
+                                                      color: Colors.black),
+                                                ))
                                             : Container(),
                                       ],
                                     );
