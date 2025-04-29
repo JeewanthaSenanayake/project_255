@@ -28,31 +28,44 @@ class CommanWidgets {
   }
 
   Widget footerWidgets(int currentIndex) {
+    print(currentIndex);
     return BottomNavigationBar(
-      items: const <BottomNavigationBarItem>[
+      items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
+          icon: Icon(
+            Icons.home,
+            color: currentIndex != 0 ? Color.fromRGBO(128, 128, 128, 1) : null,
+          ),
           label: 'Home',
-          backgroundColor: Colors.grey,
+          backgroundColor: Colors.white,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.people_alt),
+          icon: Icon(
+            Icons.people_alt,
+            color: currentIndex != 1 ? Color.fromRGBO(128, 128, 128, 1) : null,
+          ),
           label: 'Members',
-          backgroundColor: Colors.grey,
+          backgroundColor: Colors.white,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.notifications),
+          icon: Icon(
+            Icons.notifications,
+            color: currentIndex != 2 ? Color.fromRGBO(128, 128, 128, 1) : null,
+          ),
           label: 'Notifications',
-          backgroundColor: Colors.grey,
+          backgroundColor: Colors.white,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.account_circle_sharp),
+          icon: Icon(
+            Icons.account_circle_sharp,
+            color: currentIndex != 3 ? Color.fromRGBO(128, 128, 128, 1) : null,
+          ),
           label: 'Account',
-          backgroundColor: Colors.grey,
+          backgroundColor: Colors.white,
         ),
       ],
       currentIndex: currentIndex,
-      selectedItemColor: Colors.amber[800],
+      selectedItemColor: Colors.black,
       onTap: _onItemTapped,
     );
   }

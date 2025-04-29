@@ -28,7 +28,8 @@ class MapAndStats {
   Future<dynamic> getMemberById(String id) async {
     try {
       final response = await http.get(
-        Uri.parse("$baseUrl/api/v1/lobbyist/get_lobbyist_by_id/$id/$commentLimit"),
+        Uri.parse(
+            "$baseUrl/api/v1/lobbyist/get_lobbyist_by_id/$id/$commentLimit"),
       );
       if (response.statusCode == 200) {
         if (json.decode(response.body).length != 0) {
@@ -90,6 +91,27 @@ class MapAndStats {
     try {
       final response = await http.get(
         Uri.parse("$baseUrl/api/v1/map/map_colors"),
+      );
+      if (response.statusCode == 200) {
+        if (json.decode(response.body).length != 0) {
+          var decodedResponse = utf8.decode(response.bodyBytes);
+          return jsonDecode(decodedResponse);
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    } catch (e) {
+      //print(e);
+      return null;
+    }
+  }
+
+  Future<dynamic> getShortLobbyistList() async {
+    try {
+      final response = await http.get(
+        Uri.parse("$baseUrl/api/v1/lobbyist/get_short_lobbyist_list"),
       );
       if (response.statusCode == 200) {
         if (json.decode(response.body).length != 0) {
