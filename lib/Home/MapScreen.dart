@@ -153,7 +153,7 @@ class _MapScreenState extends State<MapScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final bool? mapGuide = prefs.getBool('mapGuide');
-      if (mapGuide == null || mapGuide == false) {
+      if (mapGuide == null || mapGuide == true) {
         CommanWidgets(context, uid).showPopUp(0);
       }
     });

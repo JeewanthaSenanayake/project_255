@@ -86,9 +86,17 @@ class CommanWidgets {
                   Spacer(),
                   IconButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      icon: Icon(
-                        Icons.close_rounded,
-                        color: Colors.red,
+                      icon: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape
+                              .circle, 
+                        ),
+                        padding: EdgeInsets.all(8),
+                        child: Icon(
+                          Icons.close_rounded,
+                          color: Colors.white,
+                        ),
                       ))
                 ],
               ),
