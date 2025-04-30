@@ -7,6 +7,7 @@ import 'package:project_225/Notifications/NotificationViewScreen.dart';
 import 'package:project_225/Widgets/comman_widgets.dart';
 import 'package:project_225/models/map_color_model.dart';
 import 'package:project_225/services/MapAndStatsService.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:svg_path_parser/svg_path_parser.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/services.dart';
@@ -149,8 +150,12 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      CommanWidgets(context, uid).showPopUp();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final bool? mapGuide = prefs.getBool('mapGuide');
+      if (mapGuide == null || mapGuide == false) {
+        CommanWidgets(context, uid).showPopUp(0);
+      }
     });
     listenToMessages();
     getUserData();

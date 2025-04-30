@@ -70,7 +70,7 @@ class CommanWidgets {
     );
   }
 
-  void showPopUp() {
+  void showPopUp(int id) {
     showDialog(
       context: context,
       barrierDismissible:
@@ -93,7 +93,7 @@ class CommanWidgets {
                 ],
               ),
               Image.asset(
-                "assets/home_guide.png",
+                id == 0 ? "assets/home_guide.png" : "assets/district_guide.png",
                 // width: scrnwidth * 0.4,
               ),
               Spacer(),

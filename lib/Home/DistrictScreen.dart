@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:project_225/Home/MemberProfile.dart';
+import 'package:project_225/Widgets/comman_widgets.dart';
 import 'package:project_225/services/MapAndStatsService.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class District extends StatefulWidget {
   String uid, distric;
@@ -22,6 +24,21 @@ class _DistrictState extends State<District> {
   bool isLoading = false;
   _DistrictState(
       {required this.uid, required this.distric, required this.data});
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final bool? districtGuide = prefs.getBool('districtGuide');
+      if (districtGuide == null || districtGuide == false) {
+        CommanWidgets(context, uid).showPopUp(1);
+      }
+      await prefs.setBool('mapGuide', true);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     double scrnwidth = MediaQuery.of(context).size.width;

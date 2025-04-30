@@ -70,9 +70,9 @@ class _AboutScreenState extends State<AboutScreen> {
                         mode: LaunchMode.externalApplication,
                       );
                     },
-                    child: SvgPicture.asset(
-                      'assets/logo.svg',
-                      width: scrnwidth * 0.5,
+                    child: Image.asset(
+                      'assets/NewLogo.png',
+                      width: scrnwidth * 0.45,
                     ),
                   ),
                 ),

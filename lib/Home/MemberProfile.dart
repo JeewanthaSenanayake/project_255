@@ -5,6 +5,7 @@ import 'package:project_225/models/map_color_model.dart';
 import 'package:project_225/models/user_model.dart';
 import 'package:project_225/services/MapAndStatsService.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MemberProfile extends StatefulWidget {
   String uid;
@@ -71,6 +72,11 @@ class _MemberProfileState extends State<MemberProfile> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('mapGuide', true);
+      await prefs.setBool('districtGuide', true);
+    });
     _scrollController.addListener(_scrollListener);
   }
 

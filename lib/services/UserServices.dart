@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../globals.dart';
 import 'package:http/http.dart' as http;
 import 'package:mime/mime.dart';
@@ -21,6 +22,9 @@ class AuthenticationService {
   }
 
   Future SingOut() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('mapGuide');
+    await prefs.remove('districtGuide');
     await _firebaseAuth.signOut();
     await _googleSignIn.signOut();
   }
