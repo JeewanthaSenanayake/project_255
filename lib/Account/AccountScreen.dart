@@ -234,6 +234,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                         userData['lastName'],
                                     style: TextStyle(
                                         color: Colors.black,
+                                        fontWeight: FontWeight.w500,
                                         fontSize: scrnwidth * 0.07),
                                   ),
                                 ),
@@ -255,7 +256,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                             value, 'fname', userData);
                                       },
                                       style: TextStyle(
-                                        color: Colors.grey,
+                                        color: Colors.black,
                                       ),
                                       initialValue: userData['firstName'],
                                       validator: (value) {
@@ -272,7 +273,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                             horizontal: inputHorizontal),
                                         labelText: 'First Name',
                                         labelStyle: TextStyle(
-                                          color: Colors.grey,
+                                          color: Colors.black,
                                         ),
                                         border: OutlineInputBorder(
                                           borderRadius:
@@ -290,7 +291,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                             value, 'lname', userData);
                                       },
                                       style: TextStyle(
-                                        color: Colors.grey,
+                                        color: Colors.black,
                                       ),
                                       initialValue: userData['lastName'],
                                       validator: (value) {
@@ -307,7 +308,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                             horizontal: inputHorizontal),
                                         labelText: 'Last Name',
                                         labelStyle: TextStyle(
-                                          color: Colors.grey,
+                                          color: Colors.black,
                                         ),
                                         border: OutlineInputBorder(
                                           borderRadius:

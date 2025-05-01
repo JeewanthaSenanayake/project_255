@@ -40,7 +40,7 @@ class _AboutScreenState extends State<AboutScreen> {
               Center(
                   child: ClipOval(
                       child: Image.asset(
-                'assets/The_Parliament_Login_Screen.png',
+                'assets/Splash.png',
                 width: scrnwidth * 0.5,
                 height: scrnwidth * 0.5,
                 fit: BoxFit.cover,
@@ -51,16 +51,18 @@ class _AboutScreenState extends State<AboutScreen> {
                     right: scrnwidth * 0.02,
                     top: scrnheight * 0.03),
                 child: Text(
-                  "Project 225 is a platform designed to promote transparency and public engagement in Sri Lanka’s political landscape. With this app, you can share your opinions on parliament members by adding positive or negative comments\n\n"
-                  "Each member’s feedback contributes to a good-bad ratio, visually represented by a linear indicator bar. The app also features an interactive map of Sri Lanka, highlighting all election districts. By selecting a district, you can view its parliament representatives and submit your feedback.\n\n"
-                  "The app dynamically calculates the overall district sentiment based on the combined good-bad scores of its MPs. Districts are then color-coded on the map, ranging from green (positive feedback) to red (negative feedback), giving you a clear visual representation of public perception.\n\n"
-                  "Project 225 empowers you to voice your opinions, fostering accountability and informed decision-making.",
-                  textAlign: TextAlign.justify,
-                  style: TextStyle(color: Colors.black87),
+                  "Project 225 is a platform designed to promote transparency and encourage public engagement in Sri Lanka’s political landscape. It empowers citizens to voice their opinions about parliament members by sharing positive or negative feedback directly through the app.\n\n"
+                  "Within the app, you can submit either positive or negative comments for any parliament member. Based on the feedback provided by you and others, a positive-negative ratio is calculated for each member, and a linear indicator bar is shown to reflect their overall public sentiment.\n\n"
+                  "You can also explore an interactive map of Sri Lanka’s election districts, where each district is automatically color-coded according to the feedback received for its MPs. "
+                  "As a result, districts are visually represented with colors ranging from green to red, giving you a clear and immediate view of how each region’s political representatives are being perceived by the public.\n\n"
+                  "With Project 225, a space has been created where your voice can contribute to accountability, transparency, and informed decision-making across the nation.",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
+              
               Container(
-                margin: EdgeInsets.only(top: scrnheight * 0.02),
+                margin: EdgeInsets.only(top: scrnheight * 0.025),
                 child: Center(
                   child: GestureDetector(
                     onTap: () async {

@@ -37,7 +37,7 @@ class CommanWidgets {
             color: currentIndex != 0 ? Color.fromRGBO(128, 128, 128, 1) : null,
           ),
           label: 'Home',
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.black,
         ),
         BottomNavigationBarItem(
           icon: Icon(
@@ -45,7 +45,7 @@ class CommanWidgets {
             color: currentIndex != 1 ? Color.fromRGBO(128, 128, 128, 1) : null,
           ),
           label: 'Members',
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.black,
         ),
         BottomNavigationBarItem(
           icon: Icon(
@@ -53,7 +53,7 @@ class CommanWidgets {
             color: currentIndex != 2 ? Color.fromRGBO(128, 128, 128, 1) : null,
           ),
           label: 'Notifications',
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.black,
         ),
         BottomNavigationBarItem(
           icon: Icon(
@@ -61,11 +61,11 @@ class CommanWidgets {
             color: currentIndex != 3 ? Color.fromRGBO(128, 128, 128, 1) : null,
           ),
           label: 'Account',
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.black,
         ),
       ],
       currentIndex: currentIndex,
-      selectedItemColor: Colors.black,
+      selectedItemColor: Colors.white,
       onTap: _onItemTapped,
     );
   }
@@ -89,8 +89,7 @@ class CommanWidgets {
                       icon: Container(
                         decoration: BoxDecoration(
                           color: Colors.red,
-                          shape: BoxShape
-                              .circle, 
+                          shape: BoxShape.circle,
                         ),
                         padding: EdgeInsets.all(8),
                         child: Icon(
