@@ -59,7 +59,7 @@ class _DistrictState extends State<District> {
             children: [
               Column(
                 children: [
-                  for (dynamic membersData in data)
+                  for (dynamic membersData in data["members"])
                     InkWell(
                       onTap: () async {
                         debugPrint(membersData['id']);

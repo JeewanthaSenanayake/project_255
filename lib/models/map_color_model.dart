@@ -11,6 +11,7 @@ class MapColorModel with ChangeNotifier {
 
   void setMapColors(dynamic data) {
     _data = data;
+    notifyListeners();
   }
 
   void matchColorVersion() {

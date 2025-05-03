@@ -42,6 +42,7 @@ class _MemberProfileState extends State<MemberProfile> {
 
     if (commentData == null) {
       _scrollController.removeListener(_scrollListener);
+      return;
     }
 
     if (commentData["next_start_from"] == null) {
@@ -137,11 +138,19 @@ class _MemberProfileState extends State<MemberProfile> {
                             bool res = await MapAndStats().addComment(
                                 data['id'], comentData, memberDistrict);
                             if (res) {
+                              double totalPositive =
+                                  (data['percentage'] / 100) *
+                                          data['total_count'] +
+                                      1;
                               setState(() {
                                 comentData['created_at'] = DateFormat(
                                         "yyyy-MM-dd'T'HH:mm:ss.SSSSSS+00:00")
                                     .format(DateTime.now());
                                 data['comments'].add(comentData);
+                                data['percentage'] = (totalPositive /
+                                        (data['total_count'] + 1)) *
+                                    100;
+                                data['total_count'] = data['total_count'] + 1;
                                 comentString = "";
                                 _controller.clear();
                               });
@@ -185,11 +194,18 @@ class _MemberProfileState extends State<MemberProfile> {
                             bool res = await MapAndStats().addComment(
                                 data['id'], comentData, memberDistrict);
                             if (res) {
+                              double totalPositive =
+                                  (data['percentage'] / 100) *
+                                      data['total_count'];
                               setState(() {
                                 comentData['created_at'] = DateFormat(
                                         "yyyy-MM-dd'T'HH:mm:ss.SSSSSS+00:00")
                                     .format(DateTime.now());
                                 data['comments'].add(comentData);
+                                data['percentage'] = (totalPositive /
+                                        (data['total_count'] + 1)) *
+                                    100;
+                                data['total_count'] = data['total_count'] + 1;
                                 comentString = "";
                                 _controller.clear();
                               });
@@ -229,6 +245,13 @@ class _MemberProfileState extends State<MemberProfile> {
         onRefresh: _refreshPage,
         color: Colors.red[900],
         child: Consumer<UserModel>(builder: (context, userModel, child) {
+          double positivePercentage = 0;
+          double negativePercentage = 0;
+          if (data["percentage"] != -1) {
+            positivePercentage =
+                double.parse(data["percentage"].toStringAsFixed(1));
+            negativePercentage = 100 - positivePercentage;
+          }
           return SafeArea(
               child: Container(
                   margin: EdgeInsets.only(
@@ -284,8 +307,21 @@ class _MemberProfileState extends State<MemberProfile> {
                                     color: Colors.black87,
                                     fontSize: scrnwidth * 0.04),
                               ),
-                              Container(
-                                margin: EdgeInsets.only(top: scrnheight * 0.02),
+                              Row(
+                                children: [
+                                  Text(
+                                      "${positivePercentage.toStringAsFixed(1)} %",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold)),
+                                  Spacer(),
+                                  Text(
+                                    "${negativePercentage.toStringAsFixed(1)} %",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(
                                 width: scrnwidth, // Total width of the bar
                                 height: scrnheight * 0.015, // Height of the bar
                                 child: Stack(
