@@ -184,9 +184,16 @@ class _SingUpState extends State<SingUp> {
                   ),
                 ),
                 Container(
+                  margin: EdgeInsets.only(top: scrnheight * 0.025),
                   padding: EdgeInsets.all(scrnheight * 0.01),
-                  width: scrnwidth * 0.5,
+                  width: scrnwidth,
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(scrnwidth * 0.02),
+                      ),
+                    ),
                     onPressed: () async {
                       _formKey.currentState!.save();
                       if (_formKey.currentState!.validate()) {
@@ -212,16 +219,15 @@ class _SingUpState extends State<SingUp> {
                         inputData['lastName'] = '';
                       }
                     },
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 50,
-                        vertical: 10,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      padding: EdgeInsets.only(
+                          top: scrnheight * 0.02, bottom: scrnheight * 0.02),
+                      child: const Text(
+                        'Sign Up',
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 255, 255, 255)),
                       ),
                     ),
-                    child: const Text('Sign Up'),
                   ),
                 ),
               ],
