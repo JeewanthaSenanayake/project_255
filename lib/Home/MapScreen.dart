@@ -333,15 +333,15 @@ class MapPainter extends CustomPainter {
       if (doubleValue >= 0.5) {
         double normalized_value = (doubleValue - 0.5) / 0.5;
         return Paint()
-          ..color = Color.lerp(Color.fromARGB(255, 83, 83, 83), Colors.green,
-                  normalized_value)!
+          ..color = Color.lerp(Color.fromARGB(255, 83, 83, 83),
+                  const Color.fromARGB(255, 0, 255, 8), normalized_value)!
               .withOpacity(0.85)
           ..style = PaintingStyle.fill;
       } else {
         double normalized_value = doubleValue / 0.5;
         return Paint()
-          ..color = Color.lerp(Colors.red, Color.fromARGB(255, 83, 83, 83),
-                  normalized_value)!
+          ..color = Color.lerp(const Color.fromARGB(255, 255, 17, 0),
+                  Color.fromARGB(255, 83, 83, 83), normalized_value)!
               .withOpacity(0.85)
           ..style = PaintingStyle.fill;
       }

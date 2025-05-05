@@ -235,6 +235,30 @@ class _MemberProfileState extends State<MemberProfile> {
       );
     }
 
+    String getTimeDiff(dateDime) {
+      DateTime createdAt = DateTime.parse(dateDime);
+      Duration diff = DateTime.now().difference(createdAt);
+
+      String timeAgo;
+      String clock = '\u{1F552}';
+
+      if (diff.inDays >= 365) {
+        timeAgo = "$clock ${DateFormat('MMM d, y').format(createdAt)}";
+      } else if (diff.inDays > 7 && diff.inDays < 365) {
+        timeAgo = "$clock ${DateFormat('MMM d').format(createdAt)}";
+      } else if (diff.inDays > 0 && diff.inDays <= 7) {
+        timeAgo = "$clock ${diff.inDays}d";
+      } else if (diff.inHours > 0) {
+        timeAgo = "$clock ${diff.inHours}h";
+      } else if (diff.inMinutes > 0) {
+        timeAgo = "$clock ${diff.inMinutes}m";
+      } else {
+        timeAgo = "just now";
+      }
+
+      return timeAgo;
+    }
+
     return Scaffold(
       appBar: AppBar(
         // backgroundColor: Colors.transparent,
@@ -250,7 +274,7 @@ class _MemberProfileState extends State<MemberProfile> {
           if (data["percentage"] != -1) {
             positivePercentage =
                 double.parse(data["percentage"].toStringAsFixed(1));
-            negativePercentage = 100 - positivePercentage;
+            negativePercentage = (100 - positivePercentage).abs();
           }
           return SafeArea(
               child: Container(
@@ -481,6 +505,26 @@ class _MemberProfileState extends State<MemberProfile> {
                                                               0.035),
                                                     ),
                                                   ),
+                                                  SizedBox(
+                                                    width: scrnwidth * 0.75,
+                                                    child: Row(
+                                                      children: [
+                                                        Spacer(),
+                                                        Text(
+                                                          getTimeDiff(data[
+                                                                      'comments']
+                                                                  [index]
+                                                              ["created_at"]),
+                                                          textAlign:
+                                                              TextAlign.right,
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
                                                 ],
                                               ),
                                             ),
