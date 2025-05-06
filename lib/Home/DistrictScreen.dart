@@ -58,13 +58,9 @@ class _DistrictState extends State<District> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: Column(
-          children: [
-            Text(
-              distric.toString().toUpperCase(),
-              style: TextStyle(color: Colors.black),
-            ),
-          ],
+        title: Text(
+          distric.toString().toUpperCase(),
+          style: TextStyle(color: Colors.black),
         ),
         iconTheme: IconThemeData(color: Colors.black),
       ),
@@ -84,7 +80,7 @@ class _DistrictState extends State<District> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "District trust meter",
+                        "${distric.toString() == "national list" ? "National list" : "District"} trust meter",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),

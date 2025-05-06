@@ -53,7 +53,6 @@ class MapAndStats {
     try {
       String url =
           "$baseUrl/api/v1/lobbyist/get_lobbyist_by_id_with_paganition/$lobbyistId/$commentLimit/$nextStartFrom";
-      print(url);
       final response = await http.get(
         Uri.parse(url),
       );

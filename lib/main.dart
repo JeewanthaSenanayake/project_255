@@ -20,9 +20,11 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Get version info
   await PackageInfo.fromPlatform();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  if (Firebase.apps.isEmpty) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
   NotificationSettings notificationSettings =
       await FirebaseMessaging.instance.requestPermission(
     alert: true,

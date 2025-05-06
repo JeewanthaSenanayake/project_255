@@ -310,7 +310,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       GestureDetector(
                         onTap: () {
                           googleSignIn();
-                          debugPrint("Google Sign In");
                         },
                         child: Container(
                           padding: EdgeInsets.all(scrnheight * 0.01),
@@ -375,6 +374,8 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     dynamic user = await authService.signInWithGoogle();
 
+    if (!mounted) return;
+    
     if (user != null) {
       Navigator.pushReplacement(
         context,

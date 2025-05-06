@@ -18,3 +18,5 @@ samples, guidance on mobile development, and a full API reference.
 
 adb pair 192.168.1.8:37051
 adb connect 192.168.8.101:44333
+
+flutter build appbundle --obfuscate --split-debug-info=build/app/outputs/symbols
