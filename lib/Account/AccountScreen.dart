@@ -140,24 +140,24 @@ class _AccountScreenState extends State<AccountScreen> {
                                               (context, error, stackTrace) {
                                             return Image.asset(
                                                 'assets/loadingMan.png',
-                                                width: scrnwidth * 0.5,
-                                                height: scrnwidth * 0.5,
+                                                width: scrnheight * 0.25,
+                                                height: scrnheight * 0.25,
                                                 fit: BoxFit.cover);
                                           },
-                                          width: scrnwidth * 0.5,
-                                          height: scrnwidth * 0.5,
+                                          width: scrnheight * 0.25,
+                                          height: scrnheight * 0.25,
                                           fit: BoxFit.cover,
                                         )
                                       : Image.asset(
                                           'assets/loadingMan.png',
-                                          width: scrnwidth * 0.5,
-                                          height: scrnwidth * 0.5,
+                                          width: scrnheight * 0.25,
+                                          height: scrnheight * 0.25,
                                           fit: BoxFit.cover,
                                         ))
                                   : Image.file(
                                       _imageFile!,
-                                      width: scrnwidth * 0.5,
-                                      height: scrnwidth * 0.5,
+                                      width: scrnheight * 0.25,
+                                      height: scrnheight * 0.25,
                                       fit: BoxFit.cover,
                                     ),
                             ),
@@ -472,7 +472,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                   icon: Icon(
                                     Icons.camera_alt,
                                     color: Colors.white,
-                                    size: scrnwidth * 0.075,
+                                    size: scrnheight * 0.04,
                                   )),
                             ),
                           )),
