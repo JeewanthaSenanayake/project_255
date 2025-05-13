@@ -20,3 +20,4 @@ adb pair 192.168.8.100:34571
 adb connect 192.168.8.101:44333
 
 flutter build appbundle --obfuscate --split-debug-info=build/app/outputs/symbols
+build/app/intermediates/merged_native_libs/release/out/lib/
