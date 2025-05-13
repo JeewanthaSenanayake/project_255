@@ -214,10 +214,14 @@ class _MapScreenState extends State<MapScreen> {
                       child: Stack(
                         children: [
                           // Display the SVG map
-                          SvgPicture.asset(
-                            'assets/Election_Map_SL.svg',
-                            semanticsLabel: 'Election Map of Sri Lanka',
-                            fit: BoxFit.contain,
+                          SizedBox(
+                            width: scrnheight * 0.7 * 0.553,
+                            height: scrnheight * 0.7,
+                            child: SvgPicture.asset(
+                              'assets/Election_Map_SL.svg',
+                              semanticsLabel: 'Election Map of Sri Lanka',
+                              fit: BoxFit.contain,
+                            ),
                           ),
                           // Custom painter to detect clicks on specific paths
                           Positioned.fill(
@@ -225,23 +229,38 @@ class _MapScreenState extends State<MapScreen> {
                               painter: MapPainter(
                                   onRegionTap: onRegionTap,
                                   context: context,
-                                  mapColorModel: mapColorModel),
+                                  mapColorModel: mapColorModel,
+                                  scrnwidth: scrnwidth,
+                                  scrnheight: scrnheight),
                             ),
                           ),
                           Positioned(
-                            left: scrnwidth * 0.45,
+                            left: scrnheight * 0.7 * 0.553 * 0.45,
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: getDistrictColor(),
+                                  padding: EdgeInsets.zero,
+                                  minimumSize: Size(0, 0),
+                                  tapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  visualDensity: VisualDensity.compact,
                                 ),
                                 onPressed: () {
                                   onRegionTap("national");
                                 },
-                                child: Text(
-                                  "National List",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
+                                child: Container(
+                                  margin: EdgeInsets.only(
+                                      left: scrnwidth * 0.03,
+                                      right: scrnwidth * 0.03,
+                                      top: scrnheight * 0.01,
+                                      bottom: scrnheight * 0.01),
+                                  child: Text(
+                                    "National List",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: scrnheight * 0.0175),
+                                  ),
                                 )),
                           ),
                           isLoading
@@ -275,11 +294,15 @@ class MapPainter extends CustomPainter {
   final Function(String) onRegionTap;
   BuildContext context;
   final MapColorModel mapColorModel;
+  final double scrnwidth;
+  final double scrnheight;
 
   MapPainter(
       {required this.onRegionTap,
       required this.context,
-      required this.mapColorModel})
+      required this.mapColorModel,
+      required this.scrnwidth,
+      required this.scrnheight})
       : super(repaint: mapColorModel);
   // Example region 1 path data (replace with actual path data from SVG)
   Path colombo = parseSvgPath(
@@ -356,6 +379,12 @@ class MapPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     // final mapColorModel = Provider.of<MapColorModel>(context);
     dynamic mapColors = mapColorModel.data;
+
+    final double originalWidth = 332.068;
+    final double originalHeight = 600;
+    final double scaleX = size.width / originalWidth;
+    final double scaleY = size.height / originalHeight;
+    canvas.scale(scaleX, scaleY);
 
     canvas.drawPath(colombo,
         getDistrictColor(mapColors == null ? -1 : mapColors['colombo']));

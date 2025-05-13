@@ -462,18 +462,23 @@ class _AccountScreenState extends State<AccountScreen> {
                           top: scrnheight * 0.18,
                           left: scrnwidth * 0.57,
                           child: ClipOval(
-                            child: Container(
+                            child: Material(
                               color: const Color.fromARGB(185, 0, 0, 0),
-                              child: IconButton(
-                                  onPressed: () async {
-                                    await getProfileImage();
-                                    debugPrint("Camera");
-                                  },
-                                  icon: Icon(
+                              child: InkWell(
+                                onTap: () async {
+                                  await getProfileImage();
+                                  debugPrint("Camera");
+                                },
+                                child: SizedBox(
+                                  width: scrnheight * 0.06,
+                                  height: scrnheight * 0.06,
+                                  child: Icon(
                                     Icons.camera_alt,
                                     color: Colors.white,
                                     size: scrnheight * 0.04,
-                                  )),
+                                  ),
+                                ),
+                              ),
                             ),
                           )),
                       isLoading2
