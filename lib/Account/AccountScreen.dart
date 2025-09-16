@@ -445,6 +445,7 @@ class _AccountScreenState extends State<AccountScreen> {
                                     Colors.black),
                               ),
                               onPressed: () {
+                                userModel.clear();
                                 AuthenticationService().SingOut();
                                 Navigator.pushReplacement(
                                   context,

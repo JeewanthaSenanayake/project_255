@@ -23,8 +23,7 @@ class AuthenticationService {
 
   Future SingOut() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('mapGuide');
-    await prefs.remove('districtGuide');
+    await prefs.clear();
     await _firebaseAuth.signOut();
     await _googleSignIn.signOut();
   }

@@ -21,4 +21,9 @@ class UserModel with ChangeNotifier {
   void createUser(dynamic data) {
     _data = data;
   }
+
+  void clear() {
+    _data = null;
+    _userId = "";
+  }
 }
