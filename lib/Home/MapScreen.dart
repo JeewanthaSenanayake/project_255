@@ -15,7 +15,6 @@ import 'package:flutter/services.dart';
 import 'package:project_225/models/user_model.dart';
 import 'package:provider/provider.dart';
 import 'package:project_225/services/UserServices.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class MapScreen extends StatefulWidget {
   String uid;
@@ -183,7 +182,7 @@ class _MapScreenState extends State<MapScreen> {
       releaseNotes: '',
       originalStoreVersion: '',
     );
-    print(ver);
+
     const simpleBehavior = true;
 
     // if (simpleBehavior) {

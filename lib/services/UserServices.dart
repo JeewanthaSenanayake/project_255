@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -52,14 +53,14 @@ class AuthenticationService {
       };
       dynamic userIndb = await getUserData(user.uid);
       if (userIndb != null) {
-        print("User found in DB");
+        debugPrint("User found in DB");
         return user.uid;
       } else {
-        print("User not found in DB and creating new user");
+        debugPrint("User not found in DB and creating new user");
         return await createNewUserOnDB(udata);
       }
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
       return null;
     }
   }
@@ -79,7 +80,7 @@ class AuthenticationService {
       };
       return await createNewUserOnDB(userdata);
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
       return null;
     }
   }
@@ -90,7 +91,7 @@ class AuthenticationService {
           email: email, password: password);
       return result.user!.uid;
     } catch (e) {
-      print(e.toString());
+      debugPrint(e.toString());
     }
   }
 
@@ -110,7 +111,7 @@ class AuthenticationService {
         return null;
       }
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
       return null;
     }
   }
@@ -127,7 +128,7 @@ class AuthenticationService {
         return null;
       }
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
       return null;
     }
   }
@@ -144,7 +145,7 @@ class AuthenticationService {
         return false;
       }
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
       return false;
     }
   }
@@ -164,15 +165,15 @@ class AuthenticationService {
       final responseBody = await http.Response.fromStream(response);
 
       if (response.statusCode == 200) {
-        print("Image uploaded successfully: ${responseBody.body}");
+        debugPrint("Image uploaded successfully: ${responseBody.body}");
         return json.decode(responseBody.body)['imgurl'];
       } else {
-        print(
+        debugPrint(
             "Image upload failed with status: ${response.statusCode}, ${responseBody.body}");
         return false;
       }
     } catch (e) {
-      print("Error uploading image: $e");
+      debugPrint("Error uploading image: $e");
       return false;
     }
   }

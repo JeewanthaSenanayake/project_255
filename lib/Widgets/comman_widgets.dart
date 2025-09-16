@@ -28,7 +28,6 @@ class CommanWidgets {
   }
 
   Widget footerWidgets(int currentIndex) {
-    print(currentIndex);
     return BottomNavigationBar(
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
