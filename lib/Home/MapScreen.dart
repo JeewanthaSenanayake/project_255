@@ -226,16 +226,18 @@ class _MapScreenState extends State<MapScreen> {
       // debugPrint(status.localVersion);
       // debugPrint(status.storeVersion);
       // debugPrint(status.canUpdate.toString());
-      newVersion.showUpdateDialog(
-        context: context,
-        versionStatus: status,
-        dialogTitle: 'Update Available',
-        dialogText:
-            'We’ve made 225 - Voice of the Nation even better for you.\n\nUpdate now to unlock fresh features, smoother performance, and a stronger voice for the people!',
-        launchModeVersion: LaunchModeVersion.external,
-        allowDismissal:
-            !isMagerNewerVersion(status.localVersion, status.storeVersion),
-      );
+      if (status.canUpdate) {
+        newVersion.showUpdateDialog(
+          context: context,
+          versionStatus: status,
+          dialogTitle: 'Update Available',
+          dialogText:
+              'We’ve made 225 - Voice of the Nation even better for you.\n\nUpdate now to unlock fresh features, smoother performance, and a stronger voice for the people!',
+          launchModeVersion: LaunchModeVersion.external,
+          allowDismissal:
+              !isMagerNewerVersion(status.localVersion, status.storeVersion),
+        );
+      }
     }
   }
 
