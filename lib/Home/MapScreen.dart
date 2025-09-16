@@ -215,8 +215,8 @@ class _MapScreenState extends State<MapScreen> {
                         children: [
                           // Display the SVG map
                           SizedBox(
-                            width: scrnheight * 0.7 * 0.553,
-                            height: scrnheight * 0.7,
+                            // width: scrnheight * 0.7 * 0.553,
+                            // height: scrnheight * 0.7,
                             child: SvgPicture.asset(
                               'assets/Election_Map_SL.svg',
                               semanticsLabel: 'Election Map of Sri Lanka',
@@ -235,7 +235,7 @@ class _MapScreenState extends State<MapScreen> {
                             ),
                           ),
                           Positioned(
-                            left: scrnheight * 0.7 * 0.553 * 0.45,
+                            right: scrnheight * 0.001,
                             child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: getDistrictColor(),
@@ -380,11 +380,11 @@ class MapPainter extends CustomPainter {
     // final mapColorModel = Provider.of<MapColorModel>(context);
     dynamic mapColors = mapColorModel.data;
 
-    final double originalWidth = 332.068;
-    final double originalHeight = 600;
-    final double scaleX = size.width / originalWidth;
-    final double scaleY = size.height / originalHeight;
-    canvas.scale(scaleX, scaleY);
+    // final double originalWidth = 332.068;
+    // final double originalHeight = 600;
+    // final double scaleX = size.width / originalWidth;
+    // final double scaleY = size.height / originalHeight;
+    // canvas.scale(scaleX, scaleY);
 
     canvas.drawPath(colombo,
         getDistrictColor(mapColors == null ? -1 : mapColors['colombo']));

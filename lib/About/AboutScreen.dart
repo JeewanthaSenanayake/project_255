@@ -51,7 +51,7 @@ class _AboutScreenState extends State<AboutScreen> {
                     right: scrnwidth * 0.02,
                     top: scrnheight * 0.03),
                 child: Text(
-                  "Project 225 is a platform designed to promote transparency and encourage public engagement in Sri Lanka’s political landscape. It empowers citizens to voice their opinions about parliament members by sharing positive or negative feedback directly through the app.\n\n"
+                  "225 - Voice of the Nation is a platform designed to promote transparency and encourage public engagement in Sri Lanka’s political landscape. It empowers citizens to voice their opinions about parliament members by sharing positive or negative feedback directly through the app.\n\n"
                   "Within the app, you can submit either positive or negative comments for any parliament member. Based on the feedback provided by you and others, a positive-negative ratio is calculated for each member, and a linear indicator bar is shown to reflect their overall public sentiment.\n\n"
                   "You can also explore an interactive map of Sri Lanka’s election districts, where each district is automatically color-coded according to the feedback received for its MPs. "
                   "As a result, districts are visually represented with colors ranging from green to red, giving you a clear and immediate view of how each region’s political representatives are being perceived by the public.\n\n"
@@ -60,7 +60,6 @@ class _AboutScreenState extends State<AboutScreen> {
                   style: TextStyle(color: Colors.black),
                 ),
               ),
-              
               Container(
                 margin: EdgeInsets.only(top: scrnheight * 0.025),
                 child: Center(
