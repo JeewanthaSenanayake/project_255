@@ -51,6 +51,7 @@ dependencies:
   url_launcher: ^6.3.1
   package_info_plus: ^8.3.0
   shared_preferences: ^2.5.3
+  new_version_plus: ^0.0.12
   
 
 dev_dependencies:
