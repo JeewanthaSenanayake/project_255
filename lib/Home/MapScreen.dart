@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:new_version_plus/new_version_plus.dart';
 import 'package:project_225/Home/DistrictScreen.dart';
 import 'package:project_225/Notifications/NotificationViewScreen.dart';
 import 'package:project_225/Widgets/comman_widgets.dart';
@@ -14,6 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:project_225/models/user_model.dart';
 import 'package:provider/provider.dart';
 import 'package:project_225/services/UserServices.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MapScreen extends StatefulWidget {
   String uid;
@@ -159,6 +161,83 @@ class _MapScreenState extends State<MapScreen> {
     });
     listenToMessages();
     getUserData();
+    _checkVersion();
+  }
+
+  String release = "";
+  void _checkVersion() async {
+    // Instantiate NewVersion manager object (Using GCP Console app as example)
+    final newVersion = NewVersionPlus(
+      // iOSId: 'com.project_225.app',
+      androidId: 'com.project_255.app',
+      androidPlayStoreCountry: "es_ES",
+      androidHtmlReleaseNotes: true, //support country code
+    );
+
+    // You can let the plugin handle fetching the status and showing a dialog,
+    // or you can fetch the status and display your own dialog, or no dialog.
+    final ver = VersionStatus(
+      appStoreLink: '',
+      localVersion: '',
+      storeVersion: '',
+      releaseNotes: '',
+      originalStoreVersion: '',
+    );
+    print(ver);
+    const simpleBehavior = true;
+
+    // if (simpleBehavior) {
+    // basicStatusCheck(newVersion);
+    // }
+    // else {
+    advancedStatusCheck(newVersion);
+    // }
+  }
+
+  basicStatusCheck(NewVersionPlus newVersion) async {
+    final version = await newVersion.getVersionStatus();
+    if (version != null) {
+      release = version.releaseNotes ?? "jjj";
+      setState(() {});
+    }
+    newVersion.showAlertIfNecessary(
+      context: context,
+      launchModeVersion: LaunchModeVersion.external,
+    );
+  }
+
+  bool isMagerNewerVersion(String current, String latest) {
+    List<String> currentParts = current.split('.');
+    List<String> latestParts = latest.split('.');
+
+    String currentTwo = "${currentParts[0]}.${currentParts[1]}";
+    String latestTwo = "${latestParts[0]}.${latestParts[1]}";
+
+    double currentNum = double.parse(currentTwo);
+    double latestNum = double.parse(latestTwo);
+
+    return latestNum > currentNum;
+  }
+
+  advancedStatusCheck(NewVersionPlus newVersion) async {
+    final status = await newVersion.getVersionStatus();
+    if (status != null) {
+      // debugPrint(status.releaseNotes);
+      // debugPrint(status.appStoreLink);
+      // debugPrint(status.localVersion);
+      // debugPrint(status.storeVersion);
+      // debugPrint(status.canUpdate.toString());
+      newVersion.showUpdateDialog(
+        context: context,
+        versionStatus: status,
+        dialogTitle: 'Update Available',
+        dialogText:
+            'We’ve made 225 - Voice of the Nation even better for you.\n\nUpdate now to unlock fresh features, smoother performance, and a stronger voice for the people!',
+        launchModeVersion: LaunchModeVersion.external,
+        allowDismissal:
+            !isMagerNewerVersion(status.localVersion, status.storeVersion),
+      );
+    }
   }
 
   @override
