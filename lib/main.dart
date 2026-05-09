@@ -4,12 +4,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:project_225/Home/MapScreen.dart';
 import 'package:project_225/LoginScreen.dart';
-import 'package:project_225/models/map_color_model.dart';
 import 'package:project_225/services/UserServices.dart';
 import 'firebase_options.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-import 'models/user_model.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 Future<void> _firebaseBackgroundHandler(RemoteMessage message) async {
   // Handle background message here
@@ -52,10 +50,7 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]).then((_) {
-    runApp(MultiProvider(providers: [
-      ChangeNotifierProvider(create: (_) => UserModel()),
-      ChangeNotifierProvider(create: (_) => MapColorModel()),
-    ], child: MyApp()));
+    runApp(ProviderScope(child: MyApp()));
   });
 }
 
@@ -66,8 +61,6 @@ class MyApp extends StatelessWidget {
   String? uid = AuthenticationService().getCurrentUser();
   @override
   Widget build(BuildContext context) {
-    final userModel = Provider.of<UserModel>(context, listen: false);
-    userModel.setUserId(uid == null ? "" : uid!);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
     return MaterialApp(
       debugShowCheckedModeBanner: false,

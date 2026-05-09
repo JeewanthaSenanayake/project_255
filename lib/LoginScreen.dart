@@ -1,49 +1,32 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:project_225/Home/MapScreen.dart';
+import 'package:project_225/core/network/dio_client.dart';
 import 'package:project_225/services/UserServices.dart';
 import 'package:project_225/SingUp.dart';
-import 'globals.dart';
-import 'package:http/http.dart' as http;
+import 'package:project_225/services/user_service.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  Future<void> checkingConnection() async {
-    setState(() {
-      isLoading = true;
-    });
-    try {
-      final response = await http.get(
-        Uri.parse("$baseUrl/api/v1/connection"),
-      );
-      if (response.statusCode == 200) {
-        setState(() {
-          isLoading = false;
-        });
-        debugPrint("Connection Established");
-      }
-    } catch (_) {
-      debugPrint("Connection Not Established");
-    }
-  }
-
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    checkingConnection();
+    userService = UserService(ref.read(dioProvider));
   }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final GlobalKey<FormState> _formKey2 = GlobalKey<FormState>();
   final AuthenticationService authService = AuthenticationService();
+  late final UserService userService;
   bool isLoading = false;
   String email = '', password = '';
 
@@ -269,15 +252,16 @@ class _LoginScreenState extends State<LoginScreen> {
                               setState(() {
                                 isLoading = true;
                               });
-                              final uData =
-                                  await authService.loginUser(email, password);
 
-                              if (uData != null) {
+                              final userData =
+                                  await userService.login(email, password);
+
+                              if (userData) {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          MapScreen(uid: uData)),
+                                          MapScreen(uid: "uData")),
                                 );
                               }
                               setState(() {
@@ -375,7 +359,7 @@ class _LoginScreenState extends State<LoginScreen> {
     dynamic user = await authService.signInWithGoogle();
 
     if (!mounted) return;
-    
+
     if (user != null) {
       Navigator.pushReplacement(
         context,
